@@ -8,16 +8,17 @@ namespace Invetory_control
 {
     internal class Product
     {
+        public int count;
         public uint id;
         public string? name;      
         public string? unit;
-        public Warehouse warehouse;
-        public Product() 
+
+        public Product(uint Id, string Name, string Unit)
         {
-            id = 0;
-            name = "";
-            unit = "";
-            warehouse = new Warehouse();
+            count = 0;
+            id = Id;
+            name = Name;
+            unit = Unit;
         }
     }
 }

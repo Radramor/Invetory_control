@@ -33,31 +33,32 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.UnitPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.CountNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.UnitPriceLabel = new System.Windows.Forms.Label();
             this.SecondWarehouseComboBox = new System.Windows.Forms.ComboBox();
             this.SecondWarehouseLabel = new System.Windows.Forms.Label();
             this.TypeComboBox = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.NameListBox = new System.Windows.Forms.ListBox();
+            this.NameProductListBox = new System.Windows.Forms.ListBox();
             this.label7 = new System.Windows.Forms.Label();
             this.FirstWarehouseComboBox = new System.Windows.Forms.ComboBox();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.CommentTextBox = new System.Windows.Forms.TextBox();
             this.DeleteOperationButton = new System.Windows.Forms.Button();
-            this.UnitPriceTextBox = new System.Windows.Forms.TextBox();
             this.SaveOperationButton = new System.Windows.Forms.Button();
-            this.QuantityTextBox = new System.Windows.Forms.TextBox();
             this.ChangeOperationButton = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.NewOperationButton = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.OperationDataGridView = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.QuantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UnitPriceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SumColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -95,6 +96,8 @@
             this.ReportDataGridView = new System.Windows.Forms.DataGridView();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.UnitPriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CountNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OperationDataGridView)).BeginInit();
             this.DirectoryTabPage.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -113,7 +116,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1174, 616);
+            this.tabPage2.Size = new System.Drawing.Size(1221, 616);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Операции";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -121,20 +124,20 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel2.Controls.Add(this.UnitPriceNumericUpDown);
+            this.panel2.Controls.Add(this.CountNumericUpDown);
             this.panel2.Controls.Add(this.UnitPriceLabel);
             this.panel2.Controls.Add(this.SecondWarehouseComboBox);
             this.panel2.Controls.Add(this.SecondWarehouseLabel);
             this.panel2.Controls.Add(this.TypeComboBox);
             this.panel2.Controls.Add(this.label8);
-            this.panel2.Controls.Add(this.NameListBox);
+            this.panel2.Controls.Add(this.NameProductListBox);
             this.panel2.Controls.Add(this.label7);
             this.panel2.Controls.Add(this.FirstWarehouseComboBox);
             this.panel2.Controls.Add(this.dateTimePicker);
             this.panel2.Controls.Add(this.CommentTextBox);
             this.panel2.Controls.Add(this.DeleteOperationButton);
-            this.panel2.Controls.Add(this.UnitPriceTextBox);
             this.panel2.Controls.Add(this.SaveOperationButton);
-            this.panel2.Controls.Add(this.QuantityTextBox);
             this.panel2.Controls.Add(this.ChangeOperationButton);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.NewOperationButton);
@@ -142,8 +145,47 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel2.Location = new System.Drawing.Point(3, 313);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1168, 300);
+            this.panel2.Size = new System.Drawing.Size(1215, 300);
             this.panel2.TabIndex = 2;
+            // 
+            // UnitPriceNumericUpDown
+            // 
+            this.UnitPriceNumericUpDown.Location = new System.Drawing.Point(492, 175);
+            this.UnitPriceNumericUpDown.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.UnitPriceNumericUpDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.UnitPriceNumericUpDown.Name = "UnitPriceNumericUpDown";
+            this.UnitPriceNumericUpDown.Size = new System.Drawing.Size(180, 27);
+            this.UnitPriceNumericUpDown.TabIndex = 30;
+            this.UnitPriceNumericUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // CountNumericUpDown
+            // 
+            this.CountNumericUpDown.Location = new System.Drawing.Point(293, 175);
+            this.CountNumericUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.CountNumericUpDown.Minimum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            -2147483648});
+            this.CountNumericUpDown.Name = "CountNumericUpDown";
+            this.CountNumericUpDown.Size = new System.Drawing.Size(180, 27);
+            this.CountNumericUpDown.TabIndex = 29;
             // 
             // UnitPriceLabel
             // 
@@ -201,15 +243,15 @@
             this.label8.TabIndex = 4;
             this.label8.Text = "Дата";
             // 
-            // NameListBox
+            // NameProductListBox
             // 
-            this.NameListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.NameListBox.FormattingEnabled = true;
-            this.NameListBox.ItemHeight = 20;
-            this.NameListBox.Location = new System.Drawing.Point(688, 61);
-            this.NameListBox.Name = "NameListBox";
-            this.NameListBox.Size = new System.Drawing.Size(195, 224);
-            this.NameListBox.TabIndex = 24;
+            this.NameProductListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.NameProductListBox.FormattingEnabled = true;
+            this.NameProductListBox.ItemHeight = 20;
+            this.NameProductListBox.Location = new System.Drawing.Point(688, 61);
+            this.NameProductListBox.Name = "NameProductListBox";
+            this.NameProductListBox.Size = new System.Drawing.Size(242, 224);
+            this.NameProductListBox.TabIndex = 24;
             // 
             // label7
             // 
@@ -252,7 +294,7 @@
             // DeleteOperationButton
             // 
             this.DeleteOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeleteOperationButton.Location = new System.Drawing.Point(896, 227);
+            this.DeleteOperationButton.Location = new System.Drawing.Point(943, 227);
             this.DeleteOperationButton.Name = "DeleteOperationButton";
             this.DeleteOperationButton.Size = new System.Drawing.Size(267, 56);
             this.DeleteOperationButton.TabIndex = 15;
@@ -260,35 +302,21 @@
             this.DeleteOperationButton.UseVisualStyleBackColor = true;
             this.DeleteOperationButton.Click += new System.EventHandler(this.DeleteOperationButton_Click);
             // 
-            // UnitPriceTextBox
-            // 
-            this.UnitPriceTextBox.Location = new System.Drawing.Point(492, 175);
-            this.UnitPriceTextBox.Name = "UnitPriceTextBox";
-            this.UnitPriceTextBox.Size = new System.Drawing.Size(180, 27);
-            this.UnitPriceTextBox.TabIndex = 21;
-            // 
             // SaveOperationButton
             // 
             this.SaveOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveOperationButton.Location = new System.Drawing.Point(896, 165);
+            this.SaveOperationButton.Location = new System.Drawing.Point(943, 165);
             this.SaveOperationButton.Name = "SaveOperationButton";
             this.SaveOperationButton.Size = new System.Drawing.Size(267, 56);
             this.SaveOperationButton.TabIndex = 14;
             this.SaveOperationButton.Text = "Сохранить";
             this.SaveOperationButton.UseVisualStyleBackColor = true;
-            this.SaveOperationButton.Click += new System.EventHandler(this.SaveOperationButton_Click);
-            // 
-            // QuantityTextBox
-            // 
-            this.QuantityTextBox.Location = new System.Drawing.Point(293, 175);
-            this.QuantityTextBox.Name = "QuantityTextBox";
-            this.QuantityTextBox.Size = new System.Drawing.Size(180, 27);
-            this.QuantityTextBox.TabIndex = 20;
+            this.SaveOperationButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // ChangeOperationButton
             // 
             this.ChangeOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeOperationButton.Location = new System.Drawing.Point(896, 103);
+            this.ChangeOperationButton.Location = new System.Drawing.Point(943, 103);
             this.ChangeOperationButton.Name = "ChangeOperationButton";
             this.ChangeOperationButton.Size = new System.Drawing.Size(267, 56);
             this.ChangeOperationButton.TabIndex = 13;
@@ -310,7 +338,7 @@
             // NewOperationButton
             // 
             this.NewOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.NewOperationButton.Location = new System.Drawing.Point(896, 41);
+            this.NewOperationButton.Location = new System.Drawing.Point(943, 41);
             this.NewOperationButton.Name = "NewOperationButton";
             this.NewOperationButton.Size = new System.Drawing.Size(267, 56);
             this.NewOperationButton.TabIndex = 12;
@@ -323,7 +351,7 @@
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label10.Location = new System.Drawing.Point(896, 1);
+            this.label10.Location = new System.Drawing.Point(943, 1);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(236, 28);
             this.label10.TabIndex = 11;
@@ -338,12 +366,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.OperationDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.OperationDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
             this.DateColumn,
             this.Column2,
             this.dataGridViewTextBoxColumn3,
             this.Column1,
-            this.dataGridViewTextBoxColumn1,
             this.dataGridViewTextBoxColumn2,
+            this.dataGridViewTextBoxColumn4,
             this.QuantityColumn,
             this.UnitPriceColumn,
             this.SumColumn,
@@ -353,9 +382,17 @@
             this.OperationDataGridView.ReadOnly = true;
             this.OperationDataGridView.RowHeadersWidth = 51;
             this.OperationDataGridView.RowTemplate.Height = 29;
-            this.OperationDataGridView.Size = new System.Drawing.Size(1168, 305);
+            this.OperationDataGridView.Size = new System.Drawing.Size(1215, 305);
             this.OperationDataGridView.TabIndex = 0;
             this.OperationDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.OperationDataGridView_CellClick);
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 50;
             // 
             // DateColumn
             // 
@@ -389,23 +426,23 @@
             this.Column1.ReadOnly = true;
             this.Column1.Width = 110;
             // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Название";
-            this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            // 
             // dataGridViewTextBoxColumn2
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.dataGridViewTextBoxColumn2.DefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridViewTextBoxColumn2.HeaderText = "Ед. измерения";
+            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn2.HeaderText = "Название";
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 110;
+            // 
+            // dataGridViewTextBoxColumn4
+            // 
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridViewTextBoxColumn4.HeaderText = "Ед. измерения";
+            this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
+            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
+            this.dataGridViewTextBoxColumn4.Width = 110;
             // 
             // QuantityColumn
             // 
@@ -431,7 +468,7 @@
             this.SumColumn.MinimumWidth = 6;
             this.SumColumn.Name = "SumColumn";
             this.SumColumn.ReadOnly = true;
-            this.SumColumn.Width = 120;
+            this.SumColumn.Width = 125;
             // 
             // CommentColumn
             // 
@@ -450,7 +487,7 @@
             this.DirectoryTabPage.Location = new System.Drawing.Point(4, 29);
             this.DirectoryTabPage.Name = "DirectoryTabPage";
             this.DirectoryTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.DirectoryTabPage.Size = new System.Drawing.Size(1174, 616);
+            this.DirectoryTabPage.Size = new System.Drawing.Size(1221, 616);
             this.DirectoryTabPage.TabIndex = 0;
             this.DirectoryTabPage.Text = "Справочник";
             this.DirectoryTabPage.UseVisualStyleBackColor = true;
@@ -491,7 +528,7 @@
             this.SaveWarehouseButton.TabIndex = 8;
             this.SaveWarehouseButton.Text = "Сохранить";
             this.SaveWarehouseButton.UseVisualStyleBackColor = true;
-            this.SaveWarehouseButton.Click += new System.EventHandler(this.SaveWarehouseButton_Click);
+            this.SaveWarehouseButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // ChangeWarehouseButton
             // 
@@ -568,7 +605,7 @@
             this.ChangePanel.Controls.Add(this.IdProductTextBox);
             this.ChangePanel.Controls.Add(this.label2);
             this.ChangePanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.ChangePanel.Location = new System.Drawing.Point(883, 3);
+            this.ChangePanel.Location = new System.Drawing.Point(930, 3);
             this.ChangePanel.Name = "ChangePanel";
             this.ChangePanel.Size = new System.Drawing.Size(288, 610);
             this.ChangePanel.TabIndex = 5;
@@ -720,7 +757,7 @@
             this.ProductDataGridView.ReadOnly = true;
             this.ProductDataGridView.RowHeadersWidth = 51;
             this.ProductDataGridView.RowTemplate.Height = 29;
-            this.ProductDataGridView.Size = new System.Drawing.Size(612, 610);
+            this.ProductDataGridView.Size = new System.Drawing.Size(659, 610);
             this.ProductDataGridView.TabIndex = 3;
             this.ProductDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ProductDataGridView_CellClick);
             // 
@@ -760,7 +797,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1182, 649);
+            this.tabControl1.Size = new System.Drawing.Size(1229, 649);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
@@ -769,7 +806,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1174, 616);
+            this.tabPage1.Size = new System.Drawing.Size(1221, 616);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Количество продуктов";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -782,14 +819,14 @@
             this.ReportDataGridView.Name = "ReportDataGridView";
             this.ReportDataGridView.RowHeadersWidth = 51;
             this.ReportDataGridView.RowTemplate.Height = 29;
-            this.ReportDataGridView.Size = new System.Drawing.Size(1168, 610);
+            this.ReportDataGridView.Size = new System.Drawing.Size(1215, 610);
             this.ReportDataGridView.TabIndex = 0;
             // 
             // InventoryControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1182, 649);
+            this.ClientSize = new System.Drawing.Size(1229, 649);
             this.Controls.Add(this.tabControl1);
             this.Name = "InventoryControlForm";
             this.Text = "Складской учет";
@@ -797,6 +834,8 @@
             this.tabPage2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.UnitPriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CountNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OperationDataGridView)).EndInit();
             this.DirectoryTabPage.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -855,26 +894,27 @@
         private Button NewOperationButton;
         private Label label10;
         private ComboBox TypeComboBox;
-        private ListBox NameListBox;
+        private ListBox NameProductListBox;
         private ComboBox FirstWarehouseComboBox;
         private TextBox CommentTextBox;
-        private TextBox UnitPriceTextBox;
-        private TextBox QuantityTextBox;
         private Label label9;
         private Label UnitPriceLabel;
         private ComboBox SecondWarehouseComboBox;
         private Label SecondWarehouseLabel;
+        private TabPage tabPage1;
+        private DataGridView ReportDataGridView;
+        private NumericUpDown CountNumericUpDown;
+        private NumericUpDown UnitPriceNumericUpDown;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn DateColumn;
         private DataGridViewTextBoxColumn Column2;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private DataGridViewTextBoxColumn QuantityColumn;
         private DataGridViewTextBoxColumn UnitPriceColumn;
         private DataGridViewTextBoxColumn SumColumn;
         private DataGridViewTextBoxColumn CommentColumn;
-        private TabPage tabPage1;
-        private DataGridView ReportDataGridView;
     }
 }

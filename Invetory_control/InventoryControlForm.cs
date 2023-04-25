@@ -9,9 +9,7 @@ namespace Invetory_control
     
     public partial class InventoryControlForm : Form
     {
-        OperationManager OM = new OperationManager();
-        ProductManager PM = new ProductManager();
-        WarehouseManager WM = new WarehouseManager();
+        WarehouseAndProductManager WM = new WarehouseAndProductManager();
             
         int selectedRow;
         public InventoryControlForm()
@@ -21,9 +19,7 @@ namespace Invetory_control
 
         private void InventoryControlForm_Load(object sender, EventArgs e)
         {
-            PM.load();
             WM.load();
-            OM.load();
 
             CreateWarehouseDataGridView();
             CreateProductDataGridView();
@@ -35,61 +31,71 @@ namespace Invetory_control
         {
             int index = 0;
             ÑreateOperationComboBoxes();
-            foreach(var row in OM.Rows)
-            {               
-                switch (row.type) 
-                {
-                    case OperationType.Buy:
-                        OperationDataGridView.Rows.Add(row.date, row.type.GetDescription(), row.product.warehouse.name, row.oldWarehouse, row.product.name, row.product.unit, row.product.warehouse.countProduct, row.unitPrice, row.sum, row.commentary);
-                        OperationDataGridView.Rows[index].Cells[3].Style.BackColor = Color.Black;
+            foreach(var warehouse in WM.WarehouseList)
+            {
+                if (warehouse.opBuys != null)
+                    foreach (var opBuy in warehouse.opBuys)
+                    {
+                        OperationDataGridView.Rows.Add(opBuy.id, opBuy.date, "Çàêóïêà", warehouse.name, "", opBuy.product.name, opBuy.product.unit, opBuy.count, opBuy.unitPrice, opBuy.sum, opBuy.commentary);
+                        OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
+                        index++;
+                    }
+                if (warehouse.opMovings != null)
+                    foreach (var opMoving in warehouse.opMovings)
+                    {
+                        //íå âûïèñûâàåò äîáàâëåíèå ïðîäóêòîâ â íîâûé ñêëàä (âòîðàÿ îïåðàöèÿ ïåðåìåùåíèÿ)
+                        if (opMoving.count > 0) continue;
+                        OperationDataGridView.Rows.Add(opMoving.id, opMoving.date, "Ïåðåìåùåíèå", warehouse.name, opMoving.newWarehouse, opMoving.product.name, opMoving.product.unit, opMoving.count, "", "", opMoving.commentary);
+                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
+                        OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
+                        index++;
+                    }
+                if (warehouse.opWriteOffs != null)
+                    foreach (var opWriteOff in warehouse.opWriteOffs)
+                    {
+                        OperationDataGridView.Rows.Add(opWriteOff.id, opWriteOff.date, "Ñïèñàíèå", warehouse.name, "", opWriteOff.product.name, opWriteOff.product.unit, opWriteOff.count, "", "", opWriteOff.commentary);
+                        OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
+                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
+                        OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
+                        index++;
+                    }
+                if (warehouse.opInventorys != null)
+                    foreach (var opInventory in warehouse.opInventorys)
+                    {
+                        OperationDataGridView.Rows.Add(opInventory.id, opInventory.date, "Èíâåíòàðèçàöèÿ", warehouse.name, "", opInventory.product.name, opInventory.product.unit, opInventory.count, "", "", opInventory.commentary);
+                        OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
+                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
+                        OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
+                        index++;
+                    }
 
-                        break;
-                    case OperationType.Moving:
-                        OperationDataGridView.Rows.Add(row.date, row.type.GetDescription(), row.oldWarehouse, row.product.warehouse.name, row.product.name, row.product.unit, row.product.warehouse.countProduct, "", "", row.commentary);
-                        OperationDataGridView.Rows[index].Cells[7].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
-                        break;
-                    case OperationType.WriteOff:
-                        OperationDataGridView.Rows.Add(row.date, row.type.GetDescription(), row.product.warehouse.name, row.oldWarehouse, row.product.name, row.product.unit, row.product.warehouse.countProduct, "", "", row.commentary);
-                        OperationDataGridView.Rows[index].Cells[3].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[7].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
-                        break;
-                    case OperationType.Inventory:
-                        OperationDataGridView.Rows.Add(row.date, row.type.GetDescription(), row.product.warehouse.name, row.oldWarehouse, row.product.name, row.product.unit, row.product.warehouse.countProduct, "", "", row.commentary);
-                        OperationDataGridView.Rows[index].Cells[3].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[7].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
-                        break;
-                }
-                index++;
             }
         }
         private void ÑreateOperationComboBoxes()
         {
             FirstWarehouseComboBox.Items.Clear();
             SecondWarehouseComboBox.Items.Clear();
-            NameListBox.Items.Clear();
-            foreach (var row in WM.Rows)
+            NameProductListBox.Items.Clear();
+            foreach (var row in WM.WarehouseList)
             {
                 FirstWarehouseComboBox.Items.Add(row.name);
                 SecondWarehouseComboBox.Items.Add(row.name);
             }   
-            foreach (var row in PM.Rows)
+            foreach (var row in WM.TotalProductList)
             {
-                NameListBox.Items.Add(row.name);
+                NameProductListBox.Items.Add(row.name);
             }
         }
         private void CreateWarehouseDataGridView()
         {
-            foreach (var row in WM.Rows)
+            foreach (var row in WM.WarehouseList)
             {
                 WarehouseDataGridView.Rows.Add(row.name);
             }
         }
         private void CreateProductDataGridView()
         {
-            foreach (var row in PM.Rows)
+            foreach (var row in WM.TotalProductList)
             {
                 ProductDataGridView.Rows.Add(row.id, row.name, row.unit);
             }
@@ -108,36 +114,28 @@ namespace Invetory_control
             ReportDataGridView.Columns.Add("CountColumn", "Âñåãî");
             ReportDataGridView.Columns[ReportDataGridView.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
-            foreach (var (i, row) in WM.Rows.Ordinate())
+            for(int i = 0; i < WM.WarehouseList.Count; i++)
             {
-                ReportDataGridView.Columns.Add("Column" + i, row.name);
+                ReportDataGridView.Columns.Add("Column" + i, WM.WarehouseList[i].name);
                 ReportDataGridView.Columns[i+3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 if( i % 2 == 0 )
                     ReportDataGridView.Columns[i+3].DefaultCellStyle.BackColor = Color.Silver;
             }
 
-            foreach (var (IndexProduct, rowProduct) in PM.Rows.Ordinate())
-            {
-                ReportDataGridView.Rows.Add(rowProduct.name, rowProduct.unit);
-
-                foreach (var (IndexOperation, rowOperation) in OM.Rows.Ordinate())
+            for (int IndexProduct = 0; IndexProduct < WM.TotalProductList.Count; IndexProduct++)
+            {              
+                ReportDataGridView.Rows.Add(WM.TotalProductList[IndexProduct].name, WM.TotalProductList[IndexProduct].unit);
+                for (int indexWarehouse = 0; indexWarehouse < WM.WarehouseList.Count; indexWarehouse++)
                 {
-                    if (ReportDataGridView.Rows[IndexProduct].Cells[0].Value.ToString() == rowOperation.product.name)
-                    {
-                        for (int IndexColumn = 3; IndexColumn < ReportDataGridView.Columns.Count; IndexColumn++)
-                        {
-                            int a = 0;
-                            int b = OM.GetByIndex(IndexOperation).product.warehouse.countProduct;
-                            SubtractProduct(a, b, IndexProduct, IndexColumn, IndexOperation);
-                            AddProduct(a, b, IndexProduct, IndexColumn, IndexOperation);                           
-                        }
-                    }
+
+                    ReportDataGridView.Rows[IndexProduct].Cells[indexWarehouse + 3].Value = WM.WarehouseList[indexWarehouse].products[IndexProduct].count;
+
                 }
-                TotalProduct(IndexProduct);
+                TotalProductInRow(IndexProduct);
             }
         }
 
-        private void TotalProduct(int rowIndex)
+        private void TotalProductInRow(int rowIndex)
         {
             int sum = 0;
             int selectedCell;
@@ -151,45 +149,6 @@ namespace Invetory_control
             }
             ReportDataGridView.Rows[rowIndex].Cells[2].Value = sum;
         }
-
-        private void SubtractProduct(int a, int b, int IndexRow, int IndexColumn, int IndexOperation)
-        {
-            if (ReportDataGridView.Columns[IndexColumn].HeaderText == OM.GetByIndex(IndexOperation).oldWarehouse && OM.GetByIndex(IndexOperation).type == OperationType.Moving)
-            {
-
-                if (ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value != null)
-                    a = int.Parse(ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value.ToString());
-
-                ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value = a - b;
-
-                if (a - b == 0)
-                    ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value = null;
-                if (a - b < 0)
-                    ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Style.BackColor = Color.Red;
-            }
-        }
-        private void AddProduct(int a, int b, int IndexRow,int IndexColumn, int IndexOperation)
-        {
-            if (ReportDataGridView.Columns[IndexColumn].HeaderText == OM.GetByIndex(IndexOperation).product.warehouse.name)
-            {
-
-                if (ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value != null)
-                    a = int.Parse(ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value.ToString());
-
-                ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value = a + b;
-
-                if (a + b == 0)
-                    ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Value = null;
-                if (a + b < 0)
-                    ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Style.BackColor = Color.Red;
-                else if (IndexColumn % 2 == 0)
-                    ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Style.BackColor = Color.White;
-                else
-                    ReportDataGridView.Rows[IndexRow].Cells[IndexColumn].Style.BackColor = Color.Silver;
-            }
-        }
-
-
         private void ProductDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             selectedRow = e.RowIndex;
@@ -226,88 +185,86 @@ namespace Invetory_control
                 
                 DataGridViewRow row = OperationDataGridView.Rows[selectedRow];
 
-                dateTimePicker.Text          = row.Cells[0].Value.ToString();
-                TypeComboBox.Text            = row.Cells[1].Value.ToString();
-                FirstWarehouseComboBox.Text  = row.Cells[2].Value.ToString();
-                SecondWarehouseComboBox.Text = row.Cells[3].Value.ToString();
-                NameListBox.Text             = row.Cells[4].Value.ToString();
-                QuantityTextBox.Text         = row.Cells[6].Value.ToString();
-                UnitPriceTextBox.Text        = row.Cells[7].Value.ToString();
-                CommentTextBox.Text          = row.Cells[9].FormattedValue.ToString();
+                dateTimePicker.Text          = row.Cells[1].Value.ToString();
+                TypeComboBox.Text            = row.Cells[2].Value.ToString();
+                FirstWarehouseComboBox.Text  = row.Cells[3].Value.ToString();
+                SecondWarehouseComboBox.Text = row.Cells[4].Value.ToString();
+                NameProductListBox.Text      = row.Cells[5].Value.ToString();
+                CountNumericUpDown.Text      = row.Cells[7].Value.ToString();
+                UnitPriceNumericUpDown.Text  = row.Cells[8].Value.ToString();
+                CommentTextBox.Text          = row.Cells[10].FormattedValue.ToString();
 
             }
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            PM.save();
+            WM.save();
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            PM.DeleteRow(ProductDataGridView);
+            WM.DeleteRowProductOrWarehouse(ProductDataGridView, true);
             ÑreateOperationComboBoxes();
             CreateReportDataGridView();
         }
 
         private void NewProductButton_Click(object sender, EventArgs e)
         {
-            PM.CreateRow(ProductDataGridView);
+            WM.CreateRowProduct(ProductDataGridView, IdProductTextBox, NameProductTextBox, UnitProductTextBox);
+            ÑreateOperationComboBoxes();
+            CreateReportDataGridView();
         }
 
         private void ChangeButton_Click(object sender, EventArgs e)
         {
-            PM.changeProduct(ProductDataGridView, IdProductTextBox, NameProductTextBox, UnitProductTextBox);
+            WM.ChangeRowProduct(ProductDataGridView, IdProductTextBox, NameProductTextBox, UnitProductTextBox);
             ÑreateOperationComboBoxes();
             CreateReportDataGridView();
         }
 
         private void NewWarehouseButton_Click(object sender, EventArgs e)
         {
-            WM.CreateRow(WarehouseDataGridView);
+            WM.CreateRowWarehouse(WarehouseDataGridView, NameWarehouseTextBox);
+            ÑreateOperationComboBoxes();
+            CreateReportDataGridView();
         }
 
         private void ChangeWarehouseButton_Click(object sender, EventArgs e)
         {
-            WM.changeWarehouse(WarehouseDataGridView, NameWarehouseTextBox);
+            WM.changeRowWarehouse(WarehouseDataGridView, NameWarehouseTextBox);
             ÑreateOperationComboBoxes();
             CreateReportDataGridView();
         }
 
         private void DeleteWarehouseButton_Click(object sender, EventArgs e)
         {
-            WM.DeleteRow(WarehouseDataGridView);
+            WM.DeleteRowProductOrWarehouse(WarehouseDataGridView, false);
             ÑreateOperationComboBoxes();
             CreateReportDataGridView();
         }
-        private void SaveWarehouseButton_Click(object sender, EventArgs e)
-        {
-            WM.save();
-        }
+
 
         private void NewOperationButton_Click(object sender, EventArgs e)
         {
-            OM.CreateRow(OperationDataGridView);
+            WM.TryAddOperation(OperationDataGridView, dateTimePicker, TypeComboBox, FirstWarehouseComboBox,
+                SecondWarehouseComboBox, NameProductListBox, CountNumericUpDown, UnitPriceNumericUpDown,
+                CommentTextBox);
+            CreateReportDataGridView();
         }
 
         private void ChangeOperationButton_Click(object sender, EventArgs e)
         {
-            OM.ChangeRow(OperationDataGridView, 
-               dateTimePicker, FirstWarehouseComboBox, NameListBox, 
-               QuantityTextBox, UnitPriceTextBox, CommentTextBox,
-               WM.Rows, PM.Rows, TypeComboBox, SecondWarehouseComboBox);
+            WM.TryChangeOperation(OperationDataGridView, dateTimePicker, TypeComboBox, FirstWarehouseComboBox,
+                SecondWarehouseComboBox, NameProductListBox, CountNumericUpDown, UnitPriceNumericUpDown,
+                CommentTextBox);
             CreateReportDataGridView();
         }
 
         private void DeleteOperationButton_Click(object sender, EventArgs e)
         {
-            OM.DeleteRow(OperationDataGridView);
+            WM.TryDeleteOperation(OperationDataGridView);
             CreateReportDataGridView();
-        }
-
-        private void SaveOperationButton_Click(object sender, EventArgs e)
-        {
-            OM.save();
         }
 
         private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -318,25 +275,25 @@ namespace Invetory_control
                     SecondWarehouseComboBox.Visible = false;
                     SecondWarehouseLabel.Visible = false;
                     UnitPriceLabel.Visible = true;
-                    UnitPriceTextBox.Visible = true;
+                    UnitPriceNumericUpDown.Visible = true;
                     break;
                 case "Èíâåíòàðèçàöèÿ":
                     SecondWarehouseComboBox.Visible = false;
                     SecondWarehouseLabel.Visible = false;
                     UnitPriceLabel.Visible = false;
-                    UnitPriceTextBox.Visible = false;
+                    UnitPriceNumericUpDown.Visible = false;
                     break;
                 case "Ïåðåìåùåíèå":
                     SecondWarehouseComboBox.Visible = true;
                     SecondWarehouseLabel.Visible = true;
-                    UnitPriceTextBox.Visible = false;
+                    UnitPriceNumericUpDown.Visible = false;
                     UnitPriceLabel.Visible = false;
                     break;
                 case "Ñïèñàíèå":
                     SecondWarehouseComboBox.Visible = false;
                     SecondWarehouseLabel.Visible = false;
                     UnitPriceLabel.Visible = false;
-                    UnitPriceTextBox.Visible = false;
+                    UnitPriceNumericUpDown.Visible = false;
                     break;
             }
         }   
