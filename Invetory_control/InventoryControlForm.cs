@@ -33,42 +33,40 @@ namespace Invetory_control
             СreateOperationComboBoxes();
             foreach(var warehouse in WM.WarehouseList)
             {
-                if (warehouse.opBuys != null)
-                    foreach (var opBuy in warehouse.opBuys)
-                    {
-                        OperationDataGridView.Rows.Add(opBuy.id, opBuy.date, "Закупка", warehouse.name, "", opBuy.product.name, opBuy.product.unit, opBuy.count, opBuy.unitPrice, opBuy.sum, opBuy.commentary);
-                        OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
-                        index++;
-                    }
-                if (warehouse.opMovings != null)
-                    foreach (var opMoving in warehouse.opMovings)
-                    {
-                        //не выписывает добавление продуктов в новый склад (вторая операция перемещения)
-                        if (opMoving.count > 0) continue;
-                        OperationDataGridView.Rows.Add(opMoving.id, opMoving.date, "Перемещение", warehouse.name, opMoving.newWarehouse, opMoving.product.name, opMoving.product.unit, opMoving.count, "", "", opMoving.commentary);
-                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
-                        index++;
-                    }
-                if (warehouse.opWriteOffs != null)
-                    foreach (var opWriteOff in warehouse.opWriteOffs)
-                    {
-                        OperationDataGridView.Rows.Add(opWriteOff.id, opWriteOff.date, "Списание", warehouse.name, "", opWriteOff.product.name, opWriteOff.product.unit, opWriteOff.count, "", "", opWriteOff.commentary);
-                        OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
-                        index++;
-                    }
-                if (warehouse.opInventorys != null)
-                    foreach (var opInventory in warehouse.opInventorys)
-                    {
-                        OperationDataGridView.Rows.Add(opInventory.id, opInventory.date, "Инвентаризация", warehouse.name, "", opInventory.product.name, opInventory.product.unit, opInventory.count, "", "", opInventory.commentary);
-                        OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
-                        OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
-                        index++;
-                    }
+                foreach (var opBuy in warehouse.opBuys)
+                {
+                    OperationDataGridView.Rows.Add(opBuy.id, opBuy.date, "Закупка", warehouse.name, "", opBuy.product.name, opBuy.product.unit, opBuy.count, opBuy.unitPrice, opBuy.sum, opBuy.commentary);
+                    OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
+                    index++;
+                }
 
+                foreach (var opMoving in warehouse.opMovings)
+                {
+                    //не выписывает добавление продуктов в новый склад (вторая операция перемещения)
+                    if (opMoving.count > 0) continue;
+                    OperationDataGridView.Rows.Add(opMoving.id, opMoving.date, "Перемещение", warehouse.name, opMoving.newWarehouse, opMoving.product.name, opMoving.product.unit, opMoving.count, "", "", opMoving.commentary);
+                    OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
+                    OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
+                    index++;
+                }
+
+                foreach (var opWriteOff in warehouse.opWriteOffs)
+                {
+                    OperationDataGridView.Rows.Add(opWriteOff.id, opWriteOff.date, "Списание", warehouse.name, "", opWriteOff.product.name, opWriteOff.product.unit, opWriteOff.count, "", "", opWriteOff.commentary);
+                    OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
+                    OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
+                    OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
+                    index++;
+                }
+
+                foreach (var opInventory in warehouse.opInventorys)
+                {
+                    OperationDataGridView.Rows.Add(opInventory.id, opInventory.date, "Инвентаризация", warehouse.name, "", opInventory.product.name, opInventory.product.unit, opInventory.count, "", "", opInventory.commentary);
+                    OperationDataGridView.Rows[index].Cells[4].Style.BackColor = Color.Black;
+                    OperationDataGridView.Rows[index].Cells[8].Style.BackColor = Color.Black;
+                    OperationDataGridView.Rows[index].Cells[9].Style.BackColor = Color.Black;
+                    index++;
+                }
             }
         }
         private void СreateOperationComboBoxes()
@@ -114,6 +112,7 @@ namespace Invetory_control
             ReportDataGridView.Columns.Add("CountColumn", "Всего");
             ReportDataGridView.Columns[ReportDataGridView.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
+            //создание столбцов из складов
             for(int i = 0; i < WM.WarehouseList.Count; i++)
             {
                 ReportDataGridView.Columns.Add("Column" + i, WM.WarehouseList[i].name);
@@ -127,9 +126,7 @@ namespace Invetory_control
                 ReportDataGridView.Rows.Add(WM.TotalProductList[IndexProduct].name, WM.TotalProductList[IndexProduct].unit);
                 for (int indexWarehouse = 0; indexWarehouse < WM.WarehouseList.Count; indexWarehouse++)
                 {
-
                     ReportDataGridView.Rows[IndexProduct].Cells[indexWarehouse + 3].Value = WM.WarehouseList[indexWarehouse].products[IndexProduct].count;
-
                 }
                 TotalProductInRow(IndexProduct);
             }
@@ -138,14 +135,10 @@ namespace Invetory_control
         private void TotalProductInRow(int rowIndex)
         {
             int sum = 0;
-            int selectedCell;
             for (int c = 3; c < ReportDataGridView.Columns.Count; c++)
             {
-                if (ReportDataGridView.Rows[rowIndex].Cells[c].Value == null)
-                    selectedCell = 0;
-                else
-                    selectedCell = int.Parse(ReportDataGridView.Rows[rowIndex].Cells[c].Value.ToString());
-                sum += selectedCell;
+                if (ReportDataGridView.Rows[rowIndex].Cells[c].Value != null)
+                    sum += int.Parse(ReportDataGridView.Rows[rowIndex].Cells[c].Value.ToString());
             }
             ReportDataGridView.Rows[rowIndex].Cells[2].Value = sum;
         }
@@ -204,7 +197,7 @@ namespace Invetory_control
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            WM.DeleteRowProductOrWarehouse(ProductDataGridView, true);
+            WM.DeleteRowProductOrWarehouse(ProductDataGridView);
             СreateOperationComboBoxes();
             CreateReportDataGridView();
         }
@@ -239,7 +232,7 @@ namespace Invetory_control
 
         private void DeleteWarehouseButton_Click(object sender, EventArgs e)
         {
-            WM.DeleteRowProductOrWarehouse(WarehouseDataGridView, false);
+            WM.DeleteRowProductOrWarehouse(WarehouseDataGridView);
             СreateOperationComboBoxes();
             CreateReportDataGridView();
         }
@@ -297,6 +290,5 @@ namespace Invetory_control
                     break;
             }
         }   
-    }
-    
+    } 
 }

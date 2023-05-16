@@ -10,38 +10,51 @@ namespace Invetory_control
 {
     internal class Warehouse
     {
-        public string? name;
-        public List<Product> products;
-        public List<OpBuy> opBuys;
-        public List<OpMoving> opMovings;
-        public List<OpWriteOff> opWriteOffs;
-        public List<OpInventory> opInventorys;
-
+        public string? name { get; private set; }
+        public List<Product> products { get; private set; }
+        public List<OpBuy> opBuys { get; private set; }
+        public List<OpMoving> opMovings { get; private set; }
+        public List<OpWriteOff> opWriteOffs { get; private set; }
+        public List<OpInventory> opInventorys { get; private set; }
+        
         public Warehouse(string Name, List<Product> ProductList)
         {
             products = ProductList;
             name = Name;
+            opBuys = new List<OpBuy>();
+            opMovings = new List<OpMoving>();
+            opWriteOffs = new List<OpWriteOff>();
+            opInventorys = new List<OpInventory>();
         }
+
+        [JsonConstructor]
+        public Warehouse(string Name, List<Product> Products, List<OpBuy> OpBuys, List<OpMoving> OpMovings, List<OpWriteOff> OpWriteOffs, List<OpInventory> OpInventorys)
+        {
+            products = Products;
+            name = Name;
+            opBuys = OpBuys;
+            opMovings = OpMovings;
+            opWriteOffs = OpWriteOffs;
+            opInventorys = OpInventorys;
+        }
+
         public void AddOperations(DataGridView OperationDataGridView,
             string Date, string Type, string Warehouse, string NewWarehouse,
             string NameProduct, int Count, uint UnitPrice, string Comment, int Id, bool isWriteInDataGridView)
         {
-            int indexRow;
+            OperationDataGridView.Rows.Add();
+            int indexRow = OperationDataGridView.Rows.Count - 1;
             int indexProduct = SearchIndexProduct(NameProduct);
 
             switch (Type)
             {
                 case "Закупка":
-
-                    if (opBuys == null)
-                        opBuys = new List<OpBuy>();
                     uint Sum = (uint)(Count * UnitPrice);
                     opBuys.Add(new OpBuy(Id, Count, Comment, Date, products[indexProduct], UnitPrice, Sum));
                     OpBuy ob = opBuys.Last();
-                    OperationDataGridView.Rows.Add(ob.id, ob.date, Type, Warehouse, NewWarehouse, ob.product.name,
+                    OperationDataGridView.Rows[indexRow].SetValues(ob.id, ob.date, Type, Warehouse, NewWarehouse, ob.product.name,
                         ob.product.unit, ob.count, ob.unitPrice, ob.sum, ob.commentary);
 
-                    indexRow = OperationDataGridView.Rows.Count - 1;
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.White;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Silver;
@@ -49,53 +62,42 @@ namespace Invetory_control
                     break;
 
                 case "Перемещение":
-                    if (opMovings == null)
-                        opMovings = new List<OpMoving>();
                     opMovings.Add(new OpMoving(Id, Count, Comment, Date, products[indexProduct], NewWarehouse));
                     OpMoving om = opMovings.Last();
                     if (isWriteInDataGridView)
                     {
-                        OperationDataGridView.Rows.Add(om.id, om.date, Type, Warehouse, NewWarehouse, om.product.name,
+                        OperationDataGridView.Rows[indexRow].SetValues(om.id, om.date, Type, Warehouse, NewWarehouse, om.product.name,
                         om.product.unit, om.count, "", "", om.commentary);
 
-                        indexRow = OperationDataGridView.Rows.Count - 1;
                         OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                         OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     }
+                    else OperationDataGridView.Rows.RemoveAt(indexRow);
                     break;
 
                 case "Списание":
                     Count = -Math.Abs(Count);
-                    if (opWriteOffs == null)
-                        opWriteOffs = new List<OpWriteOff>();
                     opWriteOffs.Add(new OpWriteOff(Id, Count, Comment, Date, products[indexProduct]));
                     OpWriteOff ow = opWriteOffs.Last();
 
-                    OperationDataGridView.Rows.Add(ow.id, ow.date, Type, Warehouse, NewWarehouse, ow.product.name,
+                    OperationDataGridView.Rows[indexRow].SetValues(ow.id, ow.date, Type, Warehouse, NewWarehouse, ow.product.name,
                         ow.product.unit, ow.count, "", "", ow.commentary);
 
-                    indexRow = OperationDataGridView.Rows.Count - 1;
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
-
                     break;
 
                 case "Инвентаризация":
-
-                    if (opInventorys == null)
-                        opInventorys = new List<OpInventory>();
                     opInventorys.Add(new OpInventory(Id, Count, Comment, Date, products[indexProduct]));
                     OpInventory oi = opInventorys.Last();
 
-                    OperationDataGridView.Rows.Add(oi.id, oi.date, Type, Warehouse, NewWarehouse, oi.product.name,
+                    OperationDataGridView.Rows[indexRow].SetValues(oi.id, oi.date, Type, Warehouse, NewWarehouse, oi.product.name,
                         oi.product.unit, oi.count, "", "", oi.commentary);
 
-                    indexRow = OperationDataGridView.Rows.Count - 1;
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
-
                     break;
             }
             ProductCountUpdate();            
@@ -105,78 +107,58 @@ namespace Invetory_control
             string Date, string Type, string Warehouse, string NewWarehouse,
             string NameProduct, int Count, uint UnitPrice, string Comment, int Id)
         {
-            //DeleteOperationInList(Id, NameProduct);
-            int indexRow;
+            int indexRow = OperationDataGridView.CurrentRow.Index;
             int indexProduct = SearchIndexProduct(NameProduct);
 
             switch (Type)
             {
                 case "Закупка":
-
-                    if (opBuys == null)
-                        opBuys = new List<OpBuy>();
                     uint Sum = (uint)(Count * UnitPrice);
                     opBuys.Add(new OpBuy(Id, Count, Comment, Date, products[indexProduct], UnitPrice, Sum));
                     OpBuy ob = opBuys.Last();
-
-                    indexRow = OperationDataGridView.CurrentRow.Index;
 
                     OperationDataGridView.Rows[indexRow].SetValues(ob.id, ob.date, Type, Warehouse, NewWarehouse, ob.product.name,
                         ob.product.unit, ob.count, ob.unitPrice, ob.sum, ob.commentary);
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.White;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Silver;
-
                     break;
 
                 case "Перемещение":
-                    if (opMovings == null)
-                        opMovings = new List<OpMoving>();
                     opMovings.Add(new OpMoving(Id, Count, Comment, Date, products[indexProduct], NewWarehouse));
                     OpMoving om = opMovings.Last();
 
-                    indexRow = OperationDataGridView.CurrentRow.Index;
                     OperationDataGridView.Rows[indexRow].SetValues(om.id, om.date, Type, Warehouse, NewWarehouse, om.product.name,
                         om.product.unit, om.count, "", "", om.commentary);
 
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.White;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
-                    
                     break;
 
                 case "Списание":
                     Count = -Math.Abs(Count);
-                    if (opWriteOffs == null)
-                        opWriteOffs = new List<OpWriteOff>();
                     opWriteOffs.Add(new OpWriteOff(Id, Count, Comment, Date, products[indexProduct]));
                     OpWriteOff ow = opWriteOffs.Last();
 
-                    indexRow = OperationDataGridView.CurrentRow.Index;
                     OperationDataGridView.Rows[indexRow].SetValues(ow.id, ow.date, Type, Warehouse, NewWarehouse, ow.product.name,
                         ow.product.unit, ow.count, "", "", ow.commentary);
 
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
-
                     break;
 
                 case "Инвентаризация":
-
-                    if (opInventorys == null)
-                        opInventorys = new List<OpInventory>();
                     opInventorys.Add(new OpInventory(Id, Count, Comment, Date, products[indexProduct]));
                     OpInventory oi = opInventorys.Last();
 
-                    indexRow = OperationDataGridView.CurrentRow.Index;
                     OperationDataGridView.Rows[indexRow].SetValues(oi.id, oi.date, Type, Warehouse, NewWarehouse, oi.product.name,
                         oi.product.unit, oi.count, "", "", oi.commentary);
 
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
-
                     break;
             }
             ProductCountUpdate();
@@ -186,34 +168,31 @@ namespace Invetory_control
         {
             foreach (Product product in products)
             {
-                product.count = 0;
-                if (opBuys != null)
-                    for (int i = 0; i < opBuys.Count; i++)
-                    {
-                        if (opBuys[i].product.name == product.name)
-                            product.count += opBuys[i].count;
-                    }
+                product.AddCount(-product.count);
 
-                if (opInventorys != null)
-                    for (int i = 0; i < opInventorys.Count; i++)
-                    {
-                        if (opInventorys[i].product.name == product.name)
-                            product.count += opInventorys[i].count;
-                    }
+                for (int i = 0; i < opBuys.Count; i++)
+                {
+                    if (opBuys[i].product.name == product.name)
+                        product.AddCount(opBuys[i].count);
+                }
 
-                if (opMovings != null)
-                    for (int i = 0; i < opMovings.Count; i++)
-                    {
-                        if (opMovings[i].product.name == product.name)
-                            product.count += opMovings[i].count;
-                    }
+                for (int i = 0; i < opInventorys.Count; i++)
+                {
+                    if (opInventorys[i].product.name == product.name)
+                        product.AddCount(opInventorys[i].count);
+                }
 
-                if (opWriteOffs != null)
-                    for (int i = 0; i < opWriteOffs.Count; i++)
-                    {
-                        if (opWriteOffs[i].product.name == product.name)
-                            product.count += opWriteOffs[i].count;
-                    }
+                for (int i = 0; i < opMovings.Count; i++)
+                {
+                    if (opMovings[i].product.name == product.name)
+                        product.AddCount(opMovings[i].count);
+                }
+
+                for (int i = 0; i < opWriteOffs.Count; i++)
+                {
+                    if (opWriteOffs[i].product.name == product.name)
+                        product.AddCount(opWriteOffs[i].count);
+                }
             }
         }
         public int SearchIndexProduct(string NameProduct)
@@ -230,111 +209,103 @@ namespace Invetory_control
         {
             int indexProduct = SearchIndexProduct(NameProduct); 
 
-            if (opBuys != null)
-                for (int i = 0; i < opBuys.Count; i++)
+            for (int i = 0; i < opBuys.Count; i++)
+            {
+                if (Id == opBuys[i].id)
                 {
-                    if (Id == opBuys[i].id)
-                    {
-                        products[indexProduct].count -= opBuys[i].count;
-                        opBuys.RemoveAt(i);
-                    }
+                    products[indexProduct].AddCount(-opBuys[i].count);
+                    opBuys.RemoveAt(i);
                 }
+            }
 
-            if (opInventorys != null)
-                for (int i = 0; i < opInventorys.Count; i++)
+            for (int i = 0; i < opInventorys.Count; i++)
+            {
+                if (Id == opInventorys[i].id)
                 {
-                    if (Id == opInventorys[i].id)
-                    {
-                        products[indexProduct].count -= opInventorys[i].count;
-                        opInventorys.RemoveAt(i);
-                    }
+                    products[indexProduct].AddCount(-opInventorys[i].count);
+                    opInventorys.RemoveAt(i);
                 }
+            }
 
-            if (opMovings != null)
-                for (int i = 0; i < opMovings.Count; i++)
+            for (int i = 0; i < opMovings.Count; i++)
+            {
+                if (Id == opMovings[i].id)
                 {
-                    if (Id == opMovings[i].id)
-                    {
-                        products[indexProduct].count -= opMovings[i].count;
-                        opMovings.RemoveAt(i);
-                    }
+                    products[indexProduct].AddCount(-opMovings[i].count);
+                    opMovings.RemoveAt(i);
                 }
+            }
 
-            if (opWriteOffs != null)
-                for (int i = 0; i < opWriteOffs.Count; i++)
+            for (int i = 0; i < opWriteOffs.Count; i++)
+            {
+                if (Id == opWriteOffs[i].id)
                 {
-                    if (Id == opWriteOffs[i].id)
-                    {
-                        products[indexProduct].count -= opWriteOffs[i].count;
-                        opWriteOffs.RemoveAt(i);
-                    }
+                    products[indexProduct].AddCount(-opWriteOffs[i].count);
+                    opWriteOffs.RemoveAt(i);
                 }
+            }
         }
 
         //проверяет совпадение id c имеющимися операциями 
         public bool CheckId(int Id)
         {
-            if (opBuys != null)
-                for (int i = 0; i < opBuys.Count; i++)
-                {
-                    if (Id == opBuys[i].id)
-                        return true;                
-                }
+            for (int i = 0; i < opBuys.Count; i++)
+            {
+                if (Id == opBuys[i].id)
+                    return true;                
+            }
 
-            if (opInventorys != null)
-                for (int i = 0; i < opInventorys.Count; i++)
-                {
-                    if (Id == opInventorys[i].id)
-                        return true;
-                }
+            for (int i = 0; i < opInventorys.Count; i++)
+            {
+                if (Id == opInventorys[i].id)
+                    return true;
+            }
 
-            if (opMovings != null)
-                for (int i = 0; i < opMovings.Count; i++)
-                {
-                    if (Id == opMovings[i].id)
-                        return true;
-                }
+            for (int i = 0; i < opMovings.Count; i++)
+            {
+                if (Id == opMovings[i].id)
+                    return true;
+            }
 
-            if (opWriteOffs != null)
-                for (int i = 0; i < opWriteOffs.Count; i++)
-                {
-                    if (Id == opWriteOffs[i].id)
-                        return true;
-                }
+            for (int i = 0; i < opWriteOffs.Count; i++)
+            {
+                if (Id == opWriteOffs[i].id)
+                    return true;
+            }
 
             return false;
         }
 
-        internal int SearchCountProductInOldOperation(int Id)
+        internal int SearchCountProductInOperation(int Id)
         {
-            if (opBuys != null)
-                for (int i = 0; i < opBuys.Count; i++)
-                {
-                    if (Id == opBuys[i].id)
-                        return opBuys[i].count;
-                }
+            for (int i = 0; i < opBuys.Count; i++)
+            {
+                if (Id == opBuys[i].id)
+                    return opBuys[i].count;
+            }
 
-            if (opInventorys != null)
-                for (int i = 0; i < opInventorys.Count; i++)
-                {
-                    if (Id == opInventorys[i].id)
-                        return opInventorys[i].count;
-                }
+            for (int i = 0; i < opInventorys.Count; i++)
+            {
+                if (Id == opInventorys[i].id)
+                    return opInventorys[i].count;
+            }
 
-            if (opMovings != null)
-                for (int i = 0; i < opMovings.Count; i++)
-                {
-                    if (Id == opMovings[i].id)
-                        return opMovings[i].count;
-                }
+            for (int i = 0; i < opMovings.Count; i++)
+            {
+                if (Id == opMovings[i].id)
+                    return opMovings[i].count;
+            }
 
-            if (opWriteOffs != null)
-                for (int i = 0; i < opWriteOffs.Count; i++)
-                {
-                    if (Id == opWriteOffs[i].id)
-                        return opWriteOffs[i].count;
-                }
+            for (int i = 0; i < opWriteOffs.Count; i++)
+            {
+                if (Id == opWriteOffs[i].id)
+                    return opWriteOffs[i].count;
+            }
             return -1;
+        }
+        public void SetName (string Name)
+        {
+            name = Name;
         }
     }
 }

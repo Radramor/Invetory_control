@@ -8,8 +8,8 @@ namespace Invetory_control
 {
     internal class OpBuy : Operations
     {
-        public uint unitPrice;
-        public uint sum;
+        public uint unitPrice { get; private set; }
+        public uint sum { get; private set; }
 
         public OpBuy(int Id, int Count, string Commentary, string Date, Product Product, uint UnitPrice, uint Sum)
         {

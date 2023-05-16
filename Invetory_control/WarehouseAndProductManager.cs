@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace Invetory_control
 {
@@ -20,8 +21,8 @@ namespace Invetory_control
         }
         public void load()
         {
-            WarehouseList = File.Exists("saveWarehouse.json") ? JsonConvert.DeserializeObject<List<Warehouse>>(File.ReadAllText("saveWarehouse.json")) : new List<Warehouse>();
             TotalProductList = JsonConvert.DeserializeObject<List<Product>>(File.ReadAllText("saveProduct.json"));
+            WarehouseList = File.Exists("saveWarehouse.json") ? JsonConvert.DeserializeObject<List<Warehouse>>(File.ReadAllText("saveWarehouse.json")) : new List<Warehouse>();
         }
         public void CreateRowWarehouse(DataGridView WarehouseDataGridView, TextBox textBox)
         {
@@ -38,47 +39,48 @@ namespace Invetory_control
             WarehouseDataGridView.Rows.Add(WarehouseList[WarehouseList.Count - 1].name);
         }
 
-        internal void changeRowWarehouse(DataGridView productDataGridView, TextBox textBox)
+        internal void changeRowWarehouse(DataGridView DataGridView, TextBox textBox)
         {
-            int index = productDataGridView.CurrentCell.RowIndex;
-            bool copy = false;
+            int index = DataGridView.CurrentCell.RowIndex;
+            bool isCopy = false;
 
             for (int i = 0; i < WarehouseList.Count; i++)
             {
                 if (i == index) continue;
                 if (WarehouseList[i].name == textBox.Text)
-                    copy = true;
+                    isCopy = true;
             }
-            if (!copy)
+            if (!isCopy)
             {
-                WarehouseList[index].name = textBox.Text;
-                WarehouseList[index].products = TotalProductList;
-                productDataGridView.Rows[index].SetValues(WarehouseList[index].name);
+                
+                WarehouseList[index].SetName(textBox.Text);
+                DataGridView.Rows[index].SetValues(WarehouseList[index].name);
             }
 
         }
-        public void DeleteRowProductOrWarehouse(DataGridView dataGridView, bool isProduct)
+        public void DeleteRowProductOrWarehouse(DataGridView dataGridView)
         {
             int index = dataGridView.CurrentCell.RowIndex;
-            if (isProduct == true)
+            if (dataGridView.Rows[index].Cells[0].Value.ToString() != "")
             {
-                TotalProductList.RemoveAt(index);
-                foreach (var warehouse in WarehouseList)
+                if (dataGridView.Columns.Count > 1)
                 {
-                    warehouse.products.RemoveAt(index);
+                    TotalProductList.RemoveAt(index);
+                    foreach (var warehouse in WarehouseList)
+                    {
+                        warehouse.products.RemoveAt(index);
+                    }
                 }
-            }
-            else
-                WarehouseList.RemoveAt(index);
+                else
+                    WarehouseList.RemoveAt(index);
 
-            if (dataGridView.Rows.Count == 1)
-            {
-                dataGridView.Rows[index].SetValues("", "", "", "", "", "", "", "", "", "");
-            }
-            else
-                dataGridView.Rows.RemoveAt(index);
-
-            
+                if (dataGridView.Rows.Count == 1)
+                {
+                    dataGridView.Rows[index].SetValues("", "", "");
+                }
+                else
+                    dataGridView.Rows.RemoveAt(index);
+            }          
         }
 
         public void CreateRowProduct(DataGridView ProductDataGridView, TextBox IdTextBox, TextBox NameTextBox, TextBox UnitTextBox)
@@ -112,25 +114,29 @@ namespace Invetory_control
         public void ChangeRowProduct (DataGridView ProductDataGridView, TextBox IdTextBox, TextBox NameTextBox, TextBox UnitTextBox)
         {
             int index = ProductDataGridView.CurrentCell.RowIndex;
-            bool copy = false;
-            if (uint.TryParse(IdTextBox.Text, out TotalProductList[index].id))
+            bool isCopy = false;
+            string NameInRow;
+            int IdInRow;
+
+            if (uint.TryParse(IdTextBox.Text, out uint Id))
             {
                 for (int i = 0; i < TotalProductList.Count; i++)
                 {
+                    NameInRow = ProductDataGridView.Rows[i].Cells[1].Value.ToString();
+                    IdInRow = int.Parse(ProductDataGridView.Rows[i].Cells[0].Value.ToString());
                     if (i == index) continue;
-                    if (TotalProductList[i].name == NameTextBox.Text || TotalProductList[i].id == int.Parse(IdTextBox.Text))
-                        copy = true;
+                    if (NameInRow == NameTextBox.Text || IdInRow == Id)
+                        isCopy = true;
                 }
-                if (copy == false)
+                if (!isCopy)
                 {
-                    TotalProductList[index].name = NameTextBox.Text;
-                    TotalProductList[index].unit = UnitTextBox.Text;
+                    TotalProductList[index].SetValues(NameTextBox.Text, UnitTextBox.Text, Id);
                     ProductDataGridView.Rows[index].SetValues(TotalProductList[index].id, TotalProductList[index].name, TotalProductList[index].unit);
                 }
                 foreach (var warehouse in WarehouseList)
                 {
-                    warehouse.products[index].name = TotalProductList[index].name;
-                    warehouse.products[index].unit = TotalProductList[index].unit;
+                    //warehouse.products[index] = TotalProductList[index];
+                    warehouse.products[index].SetValues(TotalProductList[index].name, TotalProductList[index].unit, TotalProductList[index].id);
                 }
             }
         }
@@ -178,9 +184,10 @@ namespace Invetory_control
                 int indexWarehouse = SearchIndexWarehouse(Warehouse);
                 int indexProduct = WarehouseList[indexWarehouse].SearchIndexProduct(NameProduct);
 
-                if (Type == "Закупка" && Count < 0) return;
+                //if (Type == "Закупка" && Count < 0) return;
                 //проверка на то, что операция не отнимет товаров больше чем в самом складе 
-                if (WarehouseList[indexWarehouse].products[indexProduct].count - Math.Abs(Count) >= 0 ||
+                if ((Type == "Закупка" && Count > 0) ||
+                    WarehouseList[indexWarehouse].products[indexProduct].count - Math.Abs(Count) >= 0 ||
                    (Type == "Инвентаризация" && WarehouseList[indexWarehouse].products[indexProduct].count + Count >= 0))
                 {
 
@@ -235,7 +242,7 @@ namespace Invetory_control
 
                 if (!int.TryParse(OperationDataGridView.CurrentRow.Cells[0].Value.ToString(), out int Id))
                     Id = CreateIdOperation();
-                int CountProductInOldOperation = WarehouseList[indexWarehouse].SearchCountProductInOldOperation(Id);
+                int CountProductInOldOperation = WarehouseList[indexWarehouse].SearchCountProductInOperation(Id);
                 //проверка на то, что операция не отнимет товаров больше чем в самом складе 
                 if ((Type == "Закупка" && Count > 0) ||
                     WarehouseList[indexWarehouse].products[indexProduct].count - CountProductInOldOperation - Math.Abs(Count) >= 0 ||
