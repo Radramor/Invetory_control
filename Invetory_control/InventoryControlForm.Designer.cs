@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.UnitPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -83,7 +83,6 @@
             this.NameProductTextBox = new System.Windows.Forms.TextBox();
             this.UnitProductTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.IdProductTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.WarehouseDataGridView = new System.Windows.Forms.DataGridView();
             this.WarehouseColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -94,6 +93,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.ReportDataGridView = new System.Windows.Forms.DataGridView();
+            this.IdProductNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UnitPriceNumericUpDown)).BeginInit();
@@ -107,6 +107,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReportDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IdProductNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage2
@@ -436,8 +437,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridViewTextBoxColumn4.HeaderText = "Ед. измерения";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
@@ -462,8 +463,8 @@
             // 
             // SumColumn
             // 
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
-            this.SumColumn.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Silver;
+            this.SumColumn.DefaultCellStyle = dataGridViewCellStyle5;
             this.SumColumn.HeaderText = "Сумма закупки";
             this.SumColumn.MinimumWidth = 6;
             this.SumColumn.Name = "SumColumn";
@@ -593,6 +594,7 @@
             // 
             this.ChangePanel.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ChangePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ChangePanel.Controls.Add(this.IdProductNumericUpDown);
             this.ChangePanel.Controls.Add(this.Errorlabel);
             this.ChangePanel.Controls.Add(this.DeleteProductButton);
             this.ChangePanel.Controls.Add(this.SaveProductButton);
@@ -602,7 +604,6 @@
             this.ChangePanel.Controls.Add(this.NameProductTextBox);
             this.ChangePanel.Controls.Add(this.UnitProductTextBox);
             this.ChangePanel.Controls.Add(this.label1);
-            this.ChangePanel.Controls.Add(this.IdProductTextBox);
             this.ChangePanel.Controls.Add(this.label2);
             this.ChangePanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.ChangePanel.Location = new System.Drawing.Point(930, 3);
@@ -695,13 +696,6 @@
             this.label1.Text = "Запись продуктов:\r\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // IdProductTextBox
-            // 
-            this.IdProductTextBox.Location = new System.Drawing.Point(7, 74);
-            this.IdProductTextBox.Name = "IdProductTextBox";
-            this.IdProductTextBox.Size = new System.Drawing.Size(273, 27);
-            this.IdProductTextBox.TabIndex = 0;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -763,8 +757,8 @@
             // 
             // IdColumn
             // 
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            this.IdColumn.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            this.IdColumn.DefaultCellStyle = dataGridViewCellStyle6;
             this.IdColumn.HeaderText = "ID";
             this.IdColumn.MinimumWidth = 6;
             this.IdColumn.Name = "IdColumn";
@@ -822,6 +816,18 @@
             this.ReportDataGridView.Size = new System.Drawing.Size(1215, 610);
             this.ReportDataGridView.TabIndex = 0;
             // 
+            // IdProductNumericUpDown
+            // 
+            this.IdProductNumericUpDown.Location = new System.Drawing.Point(7, 72);
+            this.IdProductNumericUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.IdProductNumericUpDown.Name = "IdProductNumericUpDown";
+            this.IdProductNumericUpDown.Size = new System.Drawing.Size(273, 27);
+            this.IdProductNumericUpDown.TabIndex = 11;
+            // 
             // InventoryControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -847,6 +853,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ReportDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IdProductNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -878,7 +885,6 @@
         private TextBox NameProductTextBox;
         private TextBox UnitProductTextBox;
         private Label label1;
-        private TextBox IdProductTextBox;
         private Label label2;
         private DataGridView WarehouseDataGridView;
         private DataGridViewTextBoxColumn WarehouseColumn;
@@ -916,5 +922,6 @@
         private DataGridViewTextBoxColumn UnitPriceColumn;
         private DataGridViewTextBoxColumn SumColumn;
         private DataGridViewTextBoxColumn CommentColumn;
+        private NumericUpDown IdProductNumericUpDown;
     }
 }

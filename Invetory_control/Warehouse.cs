@@ -170,28 +170,28 @@ namespace Invetory_control
             {
                 product.AddCount(-product.count);
 
-                for (int i = 0; i < opBuys.Count; i++)
+                foreach (var opBuy in opBuys)
                 {
-                    if (opBuys[i].product.name == product.name)
-                        product.AddCount(opBuys[i].count);
+                    if (opBuy.product.name == product.name)
+                        product.AddCount(opBuy.count);
                 }
 
-                for (int i = 0; i < opInventorys.Count; i++)
+                foreach (var opInventory in opInventorys)
                 {
-                    if (opInventorys[i].product.name == product.name)
-                        product.AddCount(opInventorys[i].count);
+                    if (opInventory.product.name == product.name)
+                        product.AddCount(opInventory.count);
                 }
 
-                for (int i = 0; i < opMovings.Count; i++)
+                foreach (var opMoving in opMovings)
                 {
-                    if (opMovings[i].product.name == product.name)
-                        product.AddCount(opMovings[i].count);
+                    if (opMoving.product.name == product.name)
+                        product.AddCount(opMoving.count);
                 }
 
-                for (int i = 0; i < opWriteOffs.Count; i++)
+                foreach (var opWriteOff in opWriteOffs)
                 {
-                    if (opWriteOffs[i].product.name == product.name)
-                        product.AddCount(opWriteOffs[i].count);
+                    if (opWriteOff.product.name == product.name)
+                        product.AddCount(opWriteOff.count);
                 }
             }
         }
@@ -211,65 +211,73 @@ namespace Invetory_control
 
             for (int i = 0; i < opBuys.Count; i++)
             {
-                if (Id == opBuys[i].id)
+                if (Id == opBuys[i].id && NameProduct == opBuys[i].product.name )
                 {
                     products[indexProduct].AddCount(-opBuys[i].count);
                     opBuys.RemoveAt(i);
                 }
+                else if (Id == opBuys[i].id)
+                    opBuys.RemoveAt(i);
             }
 
             for (int i = 0; i < opInventorys.Count; i++)
             {
-                if (Id == opInventorys[i].id)
+                if (Id == opInventorys[i].id && NameProduct == opInventorys[i].product.name)
                 {
                     products[indexProduct].AddCount(-opInventorys[i].count);
                     opInventorys.RemoveAt(i);
                 }
+                else if (Id == opInventorys[i].id)
+                    opInventorys.RemoveAt(i);
             }
 
             for (int i = 0; i < opMovings.Count; i++)
             {
-                if (Id == opMovings[i].id)
+                if (Id == opMovings[i].id && NameProduct == opMovings[i].product.name)
                 {
                     products[indexProduct].AddCount(-opMovings[i].count);
                     opMovings.RemoveAt(i);
                 }
+                else if (Id == opMovings[i].id)
+                    opMovings.RemoveAt(i);
             }
 
             for (int i = 0; i < opWriteOffs.Count; i++)
             {
-                if (Id == opWriteOffs[i].id)
+                if (Id == opWriteOffs[i].id && NameProduct == opWriteOffs[i].product.name)
                 {
                     products[indexProduct].AddCount(-opWriteOffs[i].count);
                     opWriteOffs.RemoveAt(i);
                 }
+                else if (Id == opWriteOffs[i].id)
+                    opWriteOffs.RemoveAt(i);
             }
         }
 
         //проверяет совпадение id c имеющимися операциями 
         public bool CheckId(int Id)
         {
-            for (int i = 0; i < opBuys.Count; i++)
+            foreach (var opBuy in opBuys)
             {
-                if (Id == opBuys[i].id)
+                if (Id == opBuy.id)
                     return true;                
             }
 
-            for (int i = 0; i < opInventorys.Count; i++)
+            foreach (var opInventory in opInventorys)
             {
-                if (Id == opInventorys[i].id)
+                if (Id == opInventory.id)
                     return true;
             }
 
-            for (int i = 0; i < opMovings.Count; i++)
+            foreach (var opMoving in opMovings)
             {
-                if (Id == opMovings[i].id)
+                if (Id == opMoving.id)
                     return true;
             }
 
-            for (int i = 0; i < opWriteOffs.Count; i++)
+            foreach (var opWriteOff in opWriteOffs)
             {
-                if (Id == opWriteOffs[i].id)
+                if (Id == opWriteOff.id)
                     return true;
             }
 
@@ -278,34 +286,63 @@ namespace Invetory_control
 
         internal int SearchCountProductInOperation(int Id)
         {
-            for (int i = 0; i < opBuys.Count; i++)
+            foreach (var opBuy in opBuys)
             {
-                if (Id == opBuys[i].id)
-                    return opBuys[i].count;
+                if (Id == opBuy.id)
+                    return opBuy.count;
             }
 
-            for (int i = 0; i < opInventorys.Count; i++)
+            foreach (var opInventory in opInventorys)
             {
-                if (Id == opInventorys[i].id)
-                    return opInventorys[i].count;
+                if (Id == opInventory.id)
+                    return opInventory.count;
             }
 
-            for (int i = 0; i < opMovings.Count; i++)
+            foreach (var opMoving in opMovings)
             {
-                if (Id == opMovings[i].id)
-                    return opMovings[i].count;
+                if (Id == opMoving.id)
+                    return opMoving.count;
             }
 
-            for (int i = 0; i < opWriteOffs.Count; i++)
+            foreach (var opWriteOff in opWriteOffs)
             {
-                if (Id == opWriteOffs[i].id)
-                    return opWriteOffs[i].count;
+                if (Id == opWriteOff.id)
+                    return opWriteOff.count;
             }
             return -1;
         }
         public void SetName (string Name)
         {
+            if (string.IsNullOrWhiteSpace(Name))
+                throw new ArgumentException("Название не может быть пустым или состоять только из пробелов");
             name = Name;
+        }
+
+        internal void ChangeProductInOperations(string? OldName, string NewName, string Unit, uint Id)
+        {
+            foreach (var opBuy in opBuys)
+            {
+                if (OldName == opBuy.product.name)
+                    opBuy.product.SetValues(NewName, Unit, Id);
+            }
+
+            foreach (var opInventory in opInventorys)
+            {
+                if (OldName == opInventory.product.name)
+                    opInventory.product.SetValues(NewName, Unit, Id);
+            }
+
+            foreach (var opMoving in opMovings) 
+            {
+                if (OldName == opMoving.product.name)
+                    opMoving.product.SetValues(NewName, Unit, Id);
+            }
+
+            foreach (var opWriteOff in opWriteOffs)
+            {
+                if (OldName == opWriteOff.product.name)
+                    opWriteOff.product.SetValues(NewName, Unit, Id);   
+            }
         }
     }
 }
