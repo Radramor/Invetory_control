@@ -42,8 +42,9 @@ namespace Invetory_control
             string Date, string Type, string Warehouse, string NewWarehouse,
             string NameProduct, int Count, uint UnitPrice, string Comment, int Id, bool isWriteInDataGridView)
         {
-            OperationDataGridView.Rows.Add();
-            int indexRow = OperationDataGridView.Rows.Count - 1;
+
+           
+            int indexRow;
             int indexProduct = SearchIndexProduct(NameProduct);
 
             switch (Type)
@@ -52,18 +53,25 @@ namespace Invetory_control
                     uint Sum = (uint)(Count * UnitPrice);
                     opBuys.Add(new OpBuy(Id, Count, Comment, Date, products[indexProduct], UnitPrice, Sum));
                     OpBuy ob = opBuys.Last();
+
+                    OperationDataGridView.Rows.Add();
+                    indexRow = OperationDataGridView.Rows.Count - 1;
+
                     OperationDataGridView.Rows[indexRow].SetValues(ob.id, ob.date, Type, Warehouse, NewWarehouse, ob.product.name,
                         ob.product.unit, ob.count, ob.unitPrice, ob.sum, ob.commentary);
 
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.White;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Silver;
-
                     break;
 
                 case "Перемещение":
                     opMovings.Add(new OpMoving(Id, Count, Comment, Date, products[indexProduct], NewWarehouse));
                     OpMoving om = opMovings.Last();
+
+                    OperationDataGridView.Rows.Add();
+                    indexRow = OperationDataGridView.Rows.Count - 1;
+
                     if (isWriteInDataGridView)
                     {
                         OperationDataGridView.Rows[indexRow].SetValues(om.id, om.date, Type, Warehouse, NewWarehouse, om.product.name,
@@ -80,6 +88,9 @@ namespace Invetory_control
                     opWriteOffs.Add(new OpWriteOff(Id, Count, Comment, Date, products[indexProduct]));
                     OpWriteOff ow = opWriteOffs.Last();
 
+                    OperationDataGridView.Rows.Add();
+                    indexRow = OperationDataGridView.Rows.Count - 1; 
+
                     OperationDataGridView.Rows[indexRow].SetValues(ow.id, ow.date, Type, Warehouse, NewWarehouse, ow.product.name,
                         ow.product.unit, ow.count, "", "", ow.commentary);
 
@@ -92,6 +103,9 @@ namespace Invetory_control
                     opInventorys.Add(new OpInventory(Id, Count, Comment, Date, products[indexProduct]));
                     OpInventory oi = opInventorys.Last();
 
+                    OperationDataGridView.Rows.Add();
+                    indexRow = OperationDataGridView.Rows.Count - 1; 
+
                     OperationDataGridView.Rows[indexRow].SetValues(oi.id, oi.date, Type, Warehouse, NewWarehouse, oi.product.name,
                         oi.product.unit, oi.count, "", "", oi.commentary);
 
@@ -100,7 +114,7 @@ namespace Invetory_control
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     break;
             }
-            ProductCountUpdate();            
+            UpdateProductCount();            
         }
 
         public void ChangeOperations(DataGridView OperationDataGridView,
@@ -161,10 +175,10 @@ namespace Invetory_control
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     break;
             }
-            ProductCountUpdate();
+            UpdateProductCount();
         }
 
-        private void ProductCountUpdate()
+        private void UpdateProductCount()
         {
             foreach (Product product in products)
             {
@@ -201,7 +215,7 @@ namespace Invetory_control
             {
                 if (products[i].name == NameProduct) return i;
             }
-            return -1;
+            throw new ArgumentException("Не удалось найти продукт");
         }
 
         //по id в таблице находит операцию и удаляет его
@@ -211,7 +225,7 @@ namespace Invetory_control
 
             for (int i = 0; i < opBuys.Count; i++)
             {
-                if (Id == opBuys[i].id && NameProduct == opBuys[i].product.name )
+                if (Id == opBuys[i].id && NameProduct == products[i].name )
                 {
                     products[indexProduct].AddCount(-opBuys[i].count);
                     opBuys.RemoveAt(i);
@@ -222,7 +236,7 @@ namespace Invetory_control
 
             for (int i = 0; i < opInventorys.Count; i++)
             {
-                if (Id == opInventorys[i].id && NameProduct == opInventorys[i].product.name)
+                if (Id == opInventorys[i].id && NameProduct == products[i].name)
                 {
                     products[indexProduct].AddCount(-opInventorys[i].count);
                     opInventorys.RemoveAt(i);
@@ -233,7 +247,7 @@ namespace Invetory_control
 
             for (int i = 0; i < opMovings.Count; i++)
             {
-                if (Id == opMovings[i].id && NameProduct == opMovings[i].product.name)
+                if (Id == opMovings[i].id && NameProduct == products[i].name)
                 {
                     products[indexProduct].AddCount(-opMovings[i].count);
                     opMovings.RemoveAt(i);
@@ -244,7 +258,7 @@ namespace Invetory_control
 
             for (int i = 0; i < opWriteOffs.Count; i++)
             {
-                if (Id == opWriteOffs[i].id && NameProduct == opWriteOffs[i].product.name)
+                if (Id == opWriteOffs[i].id && NameProduct == products[i].name)
                 {
                     products[indexProduct].AddCount(-opWriteOffs[i].count);
                     opWriteOffs.RemoveAt(i);
@@ -314,7 +328,7 @@ namespace Invetory_control
         public void SetName (string Name)
         {
             if (string.IsNullOrWhiteSpace(Name))
-                throw new ArgumentException("Название не может быть пустым или состоять только из пробелов");
+                throw new ArgumentException("Название склада не может быть пустым или состоять только из пробелов");
             name = Name;
         }
 

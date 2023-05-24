@@ -13,12 +13,17 @@ namespace Invetory_control
 
         public OpBuy(int Id, int Count, string Commentary, string Date, Product Product, uint UnitPrice, uint Sum)
         {
-            id = Id;
+            if (Count <= 0)
+                throw new ArgumentException("В данной операции может быть только положительное количество продуктов");
+            if (UnitPrice <= 0)
+                throw new ArgumentException("Цена за единицу может быть только положительным числом");
+
             count = Count;
+            unitPrice = UnitPrice;
             commentary = Commentary;
             date = Date;
             product = Product;
-            unitPrice = UnitPrice;
+            id = Id;
             sum = Sum;
         }
     }

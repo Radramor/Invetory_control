@@ -10,8 +10,11 @@ namespace Invetory_control
     {
         public OpInventory(int Id, int Count, string Commentary, string Date, Product Product)
         {
-            id = Id;
+            if (Count == 0)
+                throw new ArgumentException("Количество продуктов не может быть равен нулю");
+
             count = Count;
+            id = Id;
             commentary = Commentary;
             date = Date;
             product = Product;

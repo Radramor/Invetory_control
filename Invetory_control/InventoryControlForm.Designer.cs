@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.ErrorOperationPanel = new System.Windows.Forms.Panel();
+            this.ErrorOperationLabel = new System.Windows.Forms.Label();
             this.UnitPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.CountNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.UnitPriceLabel = new System.Windows.Forms.Label();
@@ -74,7 +76,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.ChangePanel = new System.Windows.Forms.Panel();
-            this.Errorlabel = new System.Windows.Forms.Label();
+            this.ErrorPanel = new System.Windows.Forms.Panel();
+            this.ErrorLabel = new System.Windows.Forms.Label();
+            this.IdProductNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.DeleteProductButton = new System.Windows.Forms.Button();
             this.SaveProductButton = new System.Windows.Forms.Button();
             this.ChangeProductButton = new System.Windows.Forms.Button();
@@ -93,21 +97,22 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.ReportDataGridView = new System.Windows.Forms.DataGridView();
-            this.IdProductNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tabPage2.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.ErrorOperationPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UnitPriceNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OperationDataGridView)).BeginInit();
             this.DirectoryTabPage.SuspendLayout();
             this.panel1.SuspendLayout();
             this.ChangePanel.SuspendLayout();
+            this.ErrorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.IdProductNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WarehouseDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductDataGridView)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ReportDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.IdProductNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage2
@@ -125,6 +130,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.panel2.Controls.Add(this.ErrorOperationPanel);
             this.panel2.Controls.Add(this.UnitPriceNumericUpDown);
             this.panel2.Controls.Add(this.CountNumericUpDown);
             this.panel2.Controls.Add(this.UnitPriceLabel);
@@ -149,6 +155,26 @@
             this.panel2.Size = new System.Drawing.Size(1215, 300);
             this.panel2.TabIndex = 2;
             // 
+            // ErrorOperationPanel
+            // 
+            this.ErrorOperationPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ErrorOperationPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.ErrorOperationPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ErrorOperationPanel.Controls.Add(this.ErrorOperationLabel);
+            this.ErrorOperationPanel.Location = new System.Drawing.Point(943, 165);
+            this.ErrorOperationPanel.Name = "ErrorOperationPanel";
+            this.ErrorOperationPanel.Size = new System.Drawing.Size(266, 120);
+            this.ErrorOperationPanel.TabIndex = 31;
+            // 
+            // ErrorOperationLabel
+            // 
+            this.ErrorOperationLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ErrorOperationLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ErrorOperationLabel.Location = new System.Drawing.Point(-5, -1);
+            this.ErrorOperationLabel.Name = "ErrorOperationLabel";
+            this.ErrorOperationLabel.Size = new System.Drawing.Size(266, 119);
+            this.ErrorOperationLabel.TabIndex = 0;
+            // 
             // UnitPriceNumericUpDown
             // 
             this.UnitPriceNumericUpDown.Location = new System.Drawing.Point(492, 175);
@@ -157,14 +183,9 @@
             0,
             0,
             0});
-            this.UnitPriceNumericUpDown.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.UnitPriceNumericUpDown.Name = "UnitPriceNumericUpDown";
             this.UnitPriceNumericUpDown.Size = new System.Drawing.Size(180, 27);
-            this.UnitPriceNumericUpDown.TabIndex = 30;
+            this.UnitPriceNumericUpDown.TabIndex = 6;
             this.UnitPriceNumericUpDown.Value = new decimal(new int[] {
             1,
             0,
@@ -186,7 +207,7 @@
             -2147483648});
             this.CountNumericUpDown.Name = "CountNumericUpDown";
             this.CountNumericUpDown.Size = new System.Drawing.Size(180, 27);
-            this.CountNumericUpDown.TabIndex = 29;
+            this.CountNumericUpDown.TabIndex = 5;
             // 
             // UnitPriceLabel
             // 
@@ -206,7 +227,7 @@
             this.SecondWarehouseComboBox.MaxDropDownItems = 100;
             this.SecondWarehouseComboBox.Name = "SecondWarehouseComboBox";
             this.SecondWarehouseComboBox.Size = new System.Drawing.Size(180, 28);
-            this.SecondWarehouseComboBox.TabIndex = 27;
+            this.SecondWarehouseComboBox.TabIndex = 4;
             // 
             // SecondWarehouseLabel
             // 
@@ -231,7 +252,7 @@
             this.TypeComboBox.MaxDropDownItems = 100;
             this.TypeComboBox.Name = "TypeComboBox";
             this.TypeComboBox.Size = new System.Drawing.Size(180, 28);
-            this.TypeComboBox.TabIndex = 25;
+            this.TypeComboBox.TabIndex = 2;
             this.TypeComboBox.SelectedIndexChanged += new System.EventHandler(this.TypeComboBox_SelectedIndexChanged);
             // 
             // label8
@@ -249,10 +270,10 @@
             this.NameProductListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.NameProductListBox.FormattingEnabled = true;
             this.NameProductListBox.ItemHeight = 20;
-            this.NameProductListBox.Location = new System.Drawing.Point(688, 61);
+            this.NameProductListBox.Location = new System.Drawing.Point(678, 61);
             this.NameProductListBox.Name = "NameProductListBox";
-            this.NameProductListBox.Size = new System.Drawing.Size(242, 224);
-            this.NameProductListBox.TabIndex = 24;
+            this.NameProductListBox.Size = new System.Drawing.Size(259, 224);
+            this.NameProductListBox.TabIndex = 7;
             // 
             // label7
             // 
@@ -272,7 +293,7 @@
             this.FirstWarehouseComboBox.MaxDropDownItems = 100;
             this.FirstWarehouseComboBox.Name = "FirstWarehouseComboBox";
             this.FirstWarehouseComboBox.Size = new System.Drawing.Size(180, 28);
-            this.FirstWarehouseComboBox.TabIndex = 23;
+            this.FirstWarehouseComboBox.TabIndex = 3;
             // 
             // dateTimePicker
             // 
@@ -290,15 +311,15 @@
             this.CommentTextBox.Multiline = true;
             this.CommentTextBox.Name = "CommentTextBox";
             this.CommentTextBox.Size = new System.Drawing.Size(379, 58);
-            this.CommentTextBox.TabIndex = 22;
+            this.CommentTextBox.TabIndex = 8;
             // 
             // DeleteOperationButton
             // 
             this.DeleteOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeleteOperationButton.Location = new System.Drawing.Point(943, 227);
+            this.DeleteOperationButton.Location = new System.Drawing.Point(1079, 103);
             this.DeleteOperationButton.Name = "DeleteOperationButton";
-            this.DeleteOperationButton.Size = new System.Drawing.Size(267, 56);
-            this.DeleteOperationButton.TabIndex = 15;
+            this.DeleteOperationButton.Size = new System.Drawing.Size(130, 56);
+            this.DeleteOperationButton.TabIndex = 12;
             this.DeleteOperationButton.Text = "Удалить";
             this.DeleteOperationButton.UseVisualStyleBackColor = true;
             this.DeleteOperationButton.Click += new System.EventHandler(this.DeleteOperationButton_Click);
@@ -306,10 +327,10 @@
             // SaveOperationButton
             // 
             this.SaveOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveOperationButton.Location = new System.Drawing.Point(943, 165);
+            this.SaveOperationButton.Location = new System.Drawing.Point(943, 103);
             this.SaveOperationButton.Name = "SaveOperationButton";
-            this.SaveOperationButton.Size = new System.Drawing.Size(267, 56);
-            this.SaveOperationButton.TabIndex = 14;
+            this.SaveOperationButton.Size = new System.Drawing.Size(130, 56);
+            this.SaveOperationButton.TabIndex = 11;
             this.SaveOperationButton.Text = "Сохранить";
             this.SaveOperationButton.UseVisualStyleBackColor = true;
             this.SaveOperationButton.Click += new System.EventHandler(this.SaveButton_Click);
@@ -317,10 +338,10 @@
             // ChangeOperationButton
             // 
             this.ChangeOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeOperationButton.Location = new System.Drawing.Point(943, 103);
+            this.ChangeOperationButton.Location = new System.Drawing.Point(1079, 41);
             this.ChangeOperationButton.Name = "ChangeOperationButton";
-            this.ChangeOperationButton.Size = new System.Drawing.Size(267, 56);
-            this.ChangeOperationButton.TabIndex = 13;
+            this.ChangeOperationButton.Size = new System.Drawing.Size(130, 56);
+            this.ChangeOperationButton.TabIndex = 10;
             this.ChangeOperationButton.Text = "Изменить";
             this.ChangeOperationButton.UseVisualStyleBackColor = true;
             this.ChangeOperationButton.Click += new System.EventHandler(this.ChangeOperationButton_Click);
@@ -331,18 +352,18 @@
             this.label9.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.label9.Location = new System.Drawing.Point(293, 32);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(524, 196);
+            this.label9.Size = new System.Drawing.Size(518, 196);
             this.label9.TabIndex = 19;
-            this.label9.Text = "Вид операции                                          Название    \r\n\r\nСклад (нач." +
-    ")\r\n\r\nКоличество\r\n\r\nКомментарий";
+            this.label9.Text = "Вид операции                                         Название    \r\n\r\nСклад (нач.)" +
+    "\r\n\r\nКоличество\r\n\r\nКомментарий";
             // 
             // NewOperationButton
             // 
             this.NewOperationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.NewOperationButton.Location = new System.Drawing.Point(943, 41);
             this.NewOperationButton.Name = "NewOperationButton";
-            this.NewOperationButton.Size = new System.Drawing.Size(267, 56);
-            this.NewOperationButton.TabIndex = 12;
+            this.NewOperationButton.Size = new System.Drawing.Size(130, 56);
+            this.NewOperationButton.TabIndex = 9;
             this.NewOperationButton.Text = "Новая запись";
             this.NewOperationButton.UseVisualStyleBackColor = true;
             this.NewOperationButton.Click += new System.EventHandler(this.NewOperationButton_Click);
@@ -437,8 +458,8 @@
             // 
             // dataGridViewTextBoxColumn4
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Silver;
-            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Silver;
+            this.dataGridViewTextBoxColumn4.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewTextBoxColumn4.HeaderText = "Ед. измерения";
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
@@ -463,8 +484,8 @@
             // 
             // SumColumn
             // 
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.Silver;
-            this.SumColumn.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Silver;
+            this.SumColumn.DefaultCellStyle = dataGridViewCellStyle2;
             this.SumColumn.HeaderText = "Сумма закупки";
             this.SumColumn.MinimumWidth = 6;
             this.SumColumn.Name = "SumColumn";
@@ -506,47 +527,47 @@
             this.panel1.Controls.Add(this.NameWarehouseTextBox);
             this.panel1.Controls.Add(this.label5);
             this.panel1.Controls.Add(this.label6);
-            this.panel1.Location = new System.Drawing.Point(3, 352);
+            this.panel1.Location = new System.Drawing.Point(3, 318);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(256, 261);
+            this.panel1.Size = new System.Drawing.Size(291, 295);
             this.panel1.TabIndex = 6;
             // 
             // DeleteWarehouseButton
             // 
-            this.DeleteWarehouseButton.Location = new System.Drawing.Point(129, 195);
+            this.DeleteWarehouseButton.Location = new System.Drawing.Point(145, 211);
             this.DeleteWarehouseButton.Name = "DeleteWarehouseButton";
-            this.DeleteWarehouseButton.Size = new System.Drawing.Size(120, 50);
-            this.DeleteWarehouseButton.TabIndex = 9;
+            this.DeleteWarehouseButton.Size = new System.Drawing.Size(135, 60);
+            this.DeleteWarehouseButton.TabIndex = 5;
             this.DeleteWarehouseButton.Text = "Удалить";
             this.DeleteWarehouseButton.UseVisualStyleBackColor = true;
             this.DeleteWarehouseButton.Click += new System.EventHandler(this.DeleteWarehouseButton_Click);
             // 
             // SaveWarehouseButton
             // 
-            this.SaveWarehouseButton.Location = new System.Drawing.Point(3, 195);
+            this.SaveWarehouseButton.Location = new System.Drawing.Point(4, 211);
             this.SaveWarehouseButton.Name = "SaveWarehouseButton";
-            this.SaveWarehouseButton.Size = new System.Drawing.Size(120, 50);
-            this.SaveWarehouseButton.TabIndex = 8;
+            this.SaveWarehouseButton.Size = new System.Drawing.Size(135, 60);
+            this.SaveWarehouseButton.TabIndex = 4;
             this.SaveWarehouseButton.Text = "Сохранить";
             this.SaveWarehouseButton.UseVisualStyleBackColor = true;
             this.SaveWarehouseButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // ChangeWarehouseButton
             // 
-            this.ChangeWarehouseButton.Location = new System.Drawing.Point(129, 139);
+            this.ChangeWarehouseButton.Location = new System.Drawing.Point(145, 145);
             this.ChangeWarehouseButton.Name = "ChangeWarehouseButton";
-            this.ChangeWarehouseButton.Size = new System.Drawing.Size(120, 50);
-            this.ChangeWarehouseButton.TabIndex = 7;
+            this.ChangeWarehouseButton.Size = new System.Drawing.Size(135, 60);
+            this.ChangeWarehouseButton.TabIndex = 3;
             this.ChangeWarehouseButton.Text = "Изменить";
             this.ChangeWarehouseButton.UseVisualStyleBackColor = true;
             this.ChangeWarehouseButton.Click += new System.EventHandler(this.ChangeWarehouseButton_Click);
             // 
             // NewWarehouseButton
             // 
-            this.NewWarehouseButton.Location = new System.Drawing.Point(3, 139);
+            this.NewWarehouseButton.Location = new System.Drawing.Point(4, 145);
             this.NewWarehouseButton.Name = "NewWarehouseButton";
-            this.NewWarehouseButton.Size = new System.Drawing.Size(120, 50);
-            this.NewWarehouseButton.TabIndex = 6;
+            this.NewWarehouseButton.Size = new System.Drawing.Size(135, 60);
+            this.NewWarehouseButton.TabIndex = 2;
             this.NewWarehouseButton.Text = "Новая запись";
             this.NewWarehouseButton.UseVisualStyleBackColor = true;
             this.NewWarehouseButton.Click += new System.EventHandler(this.NewWarehouseButton_Click);
@@ -555,19 +576,19 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(-1, 108);
+            this.label4.Location = new System.Drawing.Point(2, 114);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(236, 28);
             this.label4.TabIndex = 5;
             this.label4.Text = "Управление записями:";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NameWarehouseTextBox
             // 
             this.NameWarehouseTextBox.Location = new System.Drawing.Point(3, 72);
             this.NameWarehouseTextBox.Name = "NameWarehouseTextBox";
-            this.NameWarehouseTextBox.Size = new System.Drawing.Size(246, 27);
-            this.NameWarehouseTextBox.TabIndex = 4;
+            this.NameWarehouseTextBox.Size = new System.Drawing.Size(277, 27);
+            this.NameWarehouseTextBox.TabIndex = 1;
             // 
             // label5
             // 
@@ -594,8 +615,8 @@
             // 
             this.ChangePanel.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ChangePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ChangePanel.Controls.Add(this.ErrorPanel);
             this.ChangePanel.Controls.Add(this.IdProductNumericUpDown);
-            this.ChangePanel.Controls.Add(this.Errorlabel);
             this.ChangePanel.Controls.Add(this.DeleteProductButton);
             this.ChangePanel.Controls.Add(this.SaveProductButton);
             this.ChangePanel.Controls.Add(this.ChangeProductButton);
@@ -611,21 +632,45 @@
             this.ChangePanel.Size = new System.Drawing.Size(288, 610);
             this.ChangePanel.TabIndex = 5;
             // 
-            // Errorlabel
+            // ErrorPanel
             // 
-            this.Errorlabel.AutoSize = true;
-            this.Errorlabel.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Errorlabel.Location = new System.Drawing.Point(7, 421);
-            this.Errorlabel.Name = "Errorlabel";
-            this.Errorlabel.Size = new System.Drawing.Size(0, 31);
-            this.Errorlabel.TabIndex = 10;
+            this.ErrorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ErrorPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.ErrorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ErrorPanel.Controls.Add(this.ErrorLabel);
+            this.ErrorPanel.Location = new System.Drawing.Point(7, 421);
+            this.ErrorPanel.Name = "ErrorPanel";
+            this.ErrorPanel.Size = new System.Drawing.Size(273, 173);
+            this.ErrorPanel.TabIndex = 12;
+            // 
+            // ErrorLabel
+            // 
+            this.ErrorLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.ErrorLabel.Location = new System.Drawing.Point(-1, 0);
+            this.ErrorLabel.Name = "ErrorLabel";
+            this.ErrorLabel.Size = new System.Drawing.Size(273, 171);
+            this.ErrorLabel.TabIndex = 0;
+            // 
+            // IdProductNumericUpDown
+            // 
+            this.IdProductNumericUpDown.Location = new System.Drawing.Point(7, 72);
+            this.IdProductNumericUpDown.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
+            this.IdProductNumericUpDown.Name = "IdProductNumericUpDown";
+            this.IdProductNumericUpDown.Size = new System.Drawing.Size(273, 27);
+            this.IdProductNumericUpDown.TabIndex = 6;
             // 
             // DeleteProductButton
             // 
             this.DeleteProductButton.Location = new System.Drawing.Point(145, 349);
             this.DeleteProductButton.Name = "DeleteProductButton";
             this.DeleteProductButton.Size = new System.Drawing.Size(135, 60);
-            this.DeleteProductButton.TabIndex = 9;
+            this.DeleteProductButton.TabIndex = 12;
             this.DeleteProductButton.Text = "Удалить";
             this.DeleteProductButton.UseVisualStyleBackColor = true;
             this.DeleteProductButton.Click += new System.EventHandler(this.DeleteButton_Click);
@@ -635,7 +680,7 @@
             this.SaveProductButton.Location = new System.Drawing.Point(7, 349);
             this.SaveProductButton.Name = "SaveProductButton";
             this.SaveProductButton.Size = new System.Drawing.Size(135, 60);
-            this.SaveProductButton.TabIndex = 8;
+            this.SaveProductButton.TabIndex = 11;
             this.SaveProductButton.Text = "Сохранить";
             this.SaveProductButton.UseVisualStyleBackColor = true;
             this.SaveProductButton.Click += new System.EventHandler(this.SaveButton_Click);
@@ -645,7 +690,7 @@
             this.ChangeProductButton.Location = new System.Drawing.Point(145, 283);
             this.ChangeProductButton.Name = "ChangeProductButton";
             this.ChangeProductButton.Size = new System.Drawing.Size(135, 60);
-            this.ChangeProductButton.TabIndex = 7;
+            this.ChangeProductButton.TabIndex = 10;
             this.ChangeProductButton.Text = "Изменить";
             this.ChangeProductButton.UseVisualStyleBackColor = true;
             this.ChangeProductButton.Click += new System.EventHandler(this.ChangeButton_Click);
@@ -655,7 +700,7 @@
             this.NewProductButton.Location = new System.Drawing.Point(7, 283);
             this.NewProductButton.Name = "NewProductButton";
             this.NewProductButton.Size = new System.Drawing.Size(135, 60);
-            this.NewProductButton.TabIndex = 6;
+            this.NewProductButton.TabIndex = 9;
             this.NewProductButton.Text = "Новая запись";
             this.NewProductButton.UseVisualStyleBackColor = true;
             this.NewProductButton.Click += new System.EventHandler(this.NewProductButton_Click);
@@ -676,14 +721,14 @@
             this.NameProductTextBox.Location = new System.Drawing.Point(7, 128);
             this.NameProductTextBox.Name = "NameProductTextBox";
             this.NameProductTextBox.Size = new System.Drawing.Size(273, 27);
-            this.NameProductTextBox.TabIndex = 4;
+            this.NameProductTextBox.TabIndex = 7;
             // 
             // UnitProductTextBox
             // 
             this.UnitProductTextBox.Location = new System.Drawing.Point(7, 184);
             this.UnitProductTextBox.Name = "UnitProductTextBox";
             this.UnitProductTextBox.Size = new System.Drawing.Size(273, 27);
-            this.UnitProductTextBox.TabIndex = 3;
+            this.UnitProductTextBox.TabIndex = 8;
             // 
             // label1
             // 
@@ -721,7 +766,7 @@
             this.WarehouseDataGridView.RowHeadersVisible = false;
             this.WarehouseDataGridView.RowHeadersWidth = 51;
             this.WarehouseDataGridView.RowTemplate.Height = 29;
-            this.WarehouseDataGridView.Size = new System.Drawing.Size(256, 343);
+            this.WarehouseDataGridView.Size = new System.Drawing.Size(291, 309);
             this.WarehouseDataGridView.TabIndex = 4;
             this.WarehouseDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.WarehouseDataGridView_CellClick);
             // 
@@ -746,19 +791,19 @@
             this.IdColumn,
             this.NameColumn,
             this.UnitColumn});
-            this.ProductDataGridView.Location = new System.Drawing.Point(265, 3);
+            this.ProductDataGridView.Location = new System.Drawing.Point(300, 3);
             this.ProductDataGridView.Name = "ProductDataGridView";
             this.ProductDataGridView.ReadOnly = true;
             this.ProductDataGridView.RowHeadersWidth = 51;
             this.ProductDataGridView.RowTemplate.Height = 29;
-            this.ProductDataGridView.Size = new System.Drawing.Size(659, 610);
+            this.ProductDataGridView.Size = new System.Drawing.Size(624, 610);
             this.ProductDataGridView.TabIndex = 3;
             this.ProductDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ProductDataGridView_CellClick);
             // 
             // IdColumn
             // 
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            this.IdColumn.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            this.IdColumn.DefaultCellStyle = dataGridViewCellStyle3;
             this.IdColumn.HeaderText = "ID";
             this.IdColumn.MinimumWidth = 6;
             this.IdColumn.Name = "IdColumn";
@@ -816,18 +861,6 @@
             this.ReportDataGridView.Size = new System.Drawing.Size(1215, 610);
             this.ReportDataGridView.TabIndex = 0;
             // 
-            // IdProductNumericUpDown
-            // 
-            this.IdProductNumericUpDown.Location = new System.Drawing.Point(7, 72);
-            this.IdProductNumericUpDown.Maximum = new decimal(new int[] {
-            1000000,
-            0,
-            0,
-            0});
-            this.IdProductNumericUpDown.Name = "IdProductNumericUpDown";
-            this.IdProductNumericUpDown.Size = new System.Drawing.Size(273, 27);
-            this.IdProductNumericUpDown.TabIndex = 11;
-            // 
             // InventoryControlForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -840,6 +873,7 @@
             this.tabPage2.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.ErrorOperationPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UnitPriceNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CountNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OperationDataGridView)).EndInit();
@@ -848,12 +882,13 @@
             this.panel1.PerformLayout();
             this.ChangePanel.ResumeLayout(false);
             this.ChangePanel.PerformLayout();
+            this.ErrorPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.IdProductNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WarehouseDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProductDataGridView)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ReportDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.IdProductNumericUpDown)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -893,7 +928,6 @@
         private DataGridViewTextBoxColumn NameColumn;
         private DataGridViewTextBoxColumn UnitColumn;
         private TabControl tabControl1;
-        private Label Errorlabel;
         private Button DeleteOperationButton;
         private Button SaveOperationButton;
         private Button ChangeOperationButton;
@@ -923,5 +957,9 @@
         private DataGridViewTextBoxColumn SumColumn;
         private DataGridViewTextBoxColumn CommentColumn;
         private NumericUpDown IdProductNumericUpDown;
+        private Panel ErrorPanel;
+        private Label ErrorLabel;
+        private Panel ErrorOperationPanel;
+        private Label ErrorOperationLabel;
     }
 }

@@ -23,7 +23,7 @@ namespace Invetory_control
         }
 
         [JsonConstructor]
-        public Product(int Count,uint Id, string Name, string Unit)
+        public Product(int Count, uint Id, string Name, string Unit)
         {
             count = Count;
             id = Id;
@@ -33,6 +33,11 @@ namespace Invetory_control
 
         internal void SetValues(string Name, string Unit, uint Id)
         {
+            if (string.IsNullOrWhiteSpace(Name))
+                throw new ArgumentException("Название продукта не может быть пустым или состоять только из пробелов");
+            if (string.IsNullOrWhiteSpace(Unit))
+                throw new ArgumentException("Единица измерения не может быть пустым или состоять только из пробелов");
+
             name = Name;
             unit = Unit;
             id = Id;

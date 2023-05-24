@@ -175,7 +175,6 @@ namespace Invetory_control
             selectedRow = e.RowIndex;            
             if (selectedRow >= 0)
             {
-                
                 DataGridViewRow row = OperationDataGridView.Rows[selectedRow];
 
                 dateTimePicker.Text          = row.Cells[1].Value.ToString();
@@ -186,7 +185,6 @@ namespace Invetory_control
                 CountNumericUpDown.Text      = row.Cells[7].Value.ToString();
                 UnitPriceNumericUpDown.Text  = row.Cells[8].Value.ToString();
                 CommentTextBox.Text          = row.Cells[10].FormattedValue.ToString();
-
             }
         }
 
@@ -197,9 +195,17 @@ namespace Invetory_control
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            WM.DeleteRowProduct(ProductDataGridView);
-            ÑreateOperationComboBoxes();
-            CreateReportDataGridView();
+            try
+            {
+                WM.DeleteRowProduct(ProductDataGridView);
+                ÑreateOperationComboBoxes();
+                CreateReportDataGridView();
+                ErrorLabel.Text = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorLabel.Text = ex.Message;
+            }
         }
 
         private void NewProductButton_Click(object sender, EventArgs e)
@@ -211,9 +217,17 @@ namespace Invetory_control
 
         private void ChangeButton_Click(object sender, EventArgs e)
         {
-            WM.ChangeRowProduct(ProductDataGridView, OperationDataGridView, IdProductNumericUpDown, NameProductTextBox, UnitProductTextBox);
-            ÑreateOperationComboBoxes();
-            CreateReportDataGridView();
+            try
+            {
+                WM.ChangeRowProduct(ProductDataGridView, OperationDataGridView, IdProductNumericUpDown, NameProductTextBox, UnitProductTextBox);
+                ÑreateOperationComboBoxes();
+                CreateReportDataGridView();
+                ErrorLabel.Text = "";
+            }
+            catch (Exception ex) 
+            { 
+                ErrorLabel.Text = ex.Message;
+            }
         }
 
         private void NewWarehouseButton_Click(object sender, EventArgs e)
@@ -225,39 +239,79 @@ namespace Invetory_control
 
         private void ChangeWarehouseButton_Click(object sender, EventArgs e)
         {
-            WM.ChangeRowWarehouse(WarehouseDataGridView, NameWarehouseTextBox);
-            ÑreateOperationComboBoxes();
-            CreateReportDataGridView();
+            try
+            {
+                WM.ChangeRowWarehouse(WarehouseDataGridView, NameWarehouseTextBox);
+                ÑreateOperationComboBoxes();
+                CreateReportDataGridView();
+                ErrorLabel.Text = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorLabel.Text = ex.Message;
+            }
         }
 
         private void DeleteWarehouseButton_Click(object sender, EventArgs e)
         {
-            WM.DeleteRowWarehouse(WarehouseDataGridView);
-            ÑreateOperationComboBoxes();
-            CreateReportDataGridView();
+            try
+            {
+                WM.DeleteRowWarehouse(WarehouseDataGridView);
+                ÑreateOperationComboBoxes();
+                CreateReportDataGridView();
+                ErrorLabel.Text = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorLabel.Text = ex.Message;
+            }
         }
 
 
         private void NewOperationButton_Click(object sender, EventArgs e)
         {
-            WM.TryAddOperation(OperationDataGridView, dateTimePicker, TypeComboBox, FirstWarehouseComboBox,
-                SecondWarehouseComboBox, NameProductListBox, CountNumericUpDown, UnitPriceNumericUpDown,
-                CommentTextBox);
-            CreateReportDataGridView();
+            try
+            {
+                WM.TryAddOperation(OperationDataGridView, dateTimePicker, TypeComboBox, FirstWarehouseComboBox,
+                    SecondWarehouseComboBox, NameProductListBox, CountNumericUpDown, UnitPriceNumericUpDown,
+                    CommentTextBox);
+                CreateReportDataGridView();
+                ErrorOperationLabel.Text = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorOperationLabel.Text = ex.Message;
+            }
         }
 
         private void ChangeOperationButton_Click(object sender, EventArgs e)
         {
-            WM.TryChangeOperation(OperationDataGridView, dateTimePicker, TypeComboBox, FirstWarehouseComboBox,
-                SecondWarehouseComboBox, NameProductListBox, CountNumericUpDown, UnitPriceNumericUpDown,
-                CommentTextBox);
-            CreateReportDataGridView();
+            try
+            {
+                WM.TryChangeOperation(OperationDataGridView, dateTimePicker, TypeComboBox, FirstWarehouseComboBox,
+                    SecondWarehouseComboBox, NameProductListBox, CountNumericUpDown, UnitPriceNumericUpDown,
+                    CommentTextBox);
+                CreateReportDataGridView();
+                ErrorOperationLabel.Text = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorOperationLabel.Text = ex.Message;
+            }
         }
 
         private void DeleteOperationButton_Click(object sender, EventArgs e)
         {
-            WM.TryDeleteOperation(OperationDataGridView);
-            CreateReportDataGridView();
+            try
+            {
+                WM.TryDeleteOperation(OperationDataGridView);
+                CreateReportDataGridView();
+                ErrorOperationLabel.Text = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorOperationLabel.Text = ex.Message;
+            }
         }
 
         private void TypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
