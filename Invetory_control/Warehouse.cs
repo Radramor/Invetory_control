@@ -42,8 +42,6 @@ namespace Invetory_control
             string Date, string Type, string Warehouse, string NewWarehouse,
             string NameProduct, int Count, uint UnitPrice, string Comment, int Id, bool isWriteInDataGridView)
         {
-
-           
             int indexRow;
             int indexProduct = SearchIndexProduct(NameProduct);
 
@@ -69,18 +67,18 @@ namespace Invetory_control
                     opMovings.Add(new OpMoving(Id, Count, Comment, Date, products[indexProduct], NewWarehouse));
                     OpMoving om = opMovings.Last();
 
-                    OperationDataGridView.Rows.Add();
-                    indexRow = OperationDataGridView.Rows.Count - 1;
-
                     if (isWriteInDataGridView)
                     {
+                        OperationDataGridView.Rows.Add();
+                        indexRow = OperationDataGridView.Rows.Count - 1;
+
                         OperationDataGridView.Rows[indexRow].SetValues(om.id, om.date, Type, Warehouse, NewWarehouse, om.product.name,
                         om.product.unit, om.count, "", "", om.commentary);
 
                         OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                         OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     }
-                    else OperationDataGridView.Rows.RemoveAt(indexRow);
+                    //else OperationDataGridView.Rows.RemoveAt(indexRow);
                     break;
 
                 case "Списание":
@@ -133,6 +131,7 @@ namespace Invetory_control
 
                     OperationDataGridView.Rows[indexRow].SetValues(ob.id, ob.date, Type, Warehouse, NewWarehouse, ob.product.name,
                         ob.product.unit, ob.count, ob.unitPrice, ob.sum, ob.commentary);
+
                     OperationDataGridView.Rows[indexRow].Cells[4].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.White;
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Silver;

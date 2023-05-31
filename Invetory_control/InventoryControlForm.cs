@@ -302,15 +302,15 @@ namespace Invetory_control
 
         private void DeleteOperationButton_Click(object sender, EventArgs e)
         {
-            try
+            //try
             {
                 WM.TryDeleteOperation(OperationDataGridView);
                 CreateReportDataGridView();
                 ErrorOperationLabel.Text = "";
             }
-            catch (Exception ex)
+            //catch (Exception ex)
             {
-                ErrorOperationLabel.Text = ex.Message;
+               // ErrorOperationLabel.Text = ex.Message;
             }
         }
 
