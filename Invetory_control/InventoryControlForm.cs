@@ -210,7 +210,7 @@ namespace Invetory_control
 
         private void NewProductButton_Click(object sender, EventArgs e)
         {
-            WM.CreateRowProduct(ProductDataGridView, IdProductNumericUpDown, NameProductTextBox, UnitProductTextBox);
+            WM.CreateRowProduct(ProductDataGridView, IdProductNumericUpDown, NameProductTextBox, UnitProductTextBox, WarehouseDataGridView);
             ÑreateOperationComboBoxes();
             CreateReportDataGridView();
         }
@@ -302,15 +302,15 @@ namespace Invetory_control
 
         private void DeleteOperationButton_Click(object sender, EventArgs e)
         {
-            //try
+            try
             {
                 WM.TryDeleteOperation(OperationDataGridView);
                 CreateReportDataGridView();
                 ErrorOperationLabel.Text = "";
             }
-            //catch (Exception ex)
+            catch (Exception ex)
             {
-               // ErrorOperationLabel.Text = ex.Message;
+                ErrorOperationLabel.Text = ex.Message;
             }
         }
 
@@ -343,6 +343,16 @@ namespace Invetory_control
                     UnitPriceNumericUpDown.Visible = false;
                     break;
             }
-        }   
+        }
+
+        private void FirstWarehouseComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SecondWarehouseComboBox.Items.Clear();
+            foreach (var row in WM.WarehouseList)
+            {
+                if (FirstWarehouseComboBox.SelectedItem.ToString() == row.name) continue;
+                SecondWarehouseComboBox.Items.Add(row.name);
+            }
+        }
     } 
 }

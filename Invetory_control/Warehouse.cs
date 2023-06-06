@@ -38,6 +38,12 @@ namespace Invetory_control
             opInventorys = OpInventorys;
         }
 
+        public void SetName(string Name)
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+                throw new ArgumentException("Название склада не может быть пустым или состоять только из пробелов");
+            name = Name;
+        }
         public void AddOperations(DataGridView OperationDataGridView,
             string Date, string Type, string Warehouse, string NewWarehouse,
             string NameProduct, int Count, uint UnitPrice, string Comment, int Id, bool isWriteInDataGridView)
@@ -324,12 +330,7 @@ namespace Invetory_control
             }
             return -1;
         }
-        public void SetName (string Name)
-        {
-            if (string.IsNullOrWhiteSpace(Name))
-                throw new ArgumentException("Название склада не может быть пустым или состоять только из пробелов");
-            name = Name;
-        }
+        
 
         internal void ChangeProductInOperations(string? OldName, string NewName, string Unit, uint Id)
         {

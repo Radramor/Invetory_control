@@ -294,6 +294,7 @@
             this.FirstWarehouseComboBox.Name = "FirstWarehouseComboBox";
             this.FirstWarehouseComboBox.Size = new System.Drawing.Size(180, 28);
             this.FirstWarehouseComboBox.TabIndex = 3;
+            this.FirstWarehouseComboBox.SelectedIndexChanged += new System.EventHandler(this.FirstWarehouseComboBox_SelectedIndexChanged);
             // 
             // dateTimePicker
             // 

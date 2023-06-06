@@ -41,65 +41,68 @@ namespace Invetory_control
 
         internal void ChangeRowWarehouse(DataGridView DataGridView, TextBox textBox)
         {
-            int index = DataGridView.CurrentCell.RowIndex;
-            bool isCopy = false;
-
-            for (int i = 0; i < WarehouseList.Count; i++)
+            try
             {
-                if (i == index) continue;
-                if (WarehouseList[i].name == textBox.Text)
-                    isCopy = true;
+                int index = DataGridView.CurrentCell.RowIndex;
+                bool isCopy = false;
+
+                for (int i = 0; i < WarehouseList.Count; i++)
+                {
+                    if (i == index) continue;
+                    if (WarehouseList[i].name == textBox.Text)
+                        isCopy = true;
+                }
+
+                if (isCopy) throw new ArgumentException("Данный склад уже существует");
+
+                WarehouseList[index].SetName(textBox.Text);
+                DataGridView.Rows[index].SetValues(WarehouseList[index].name);
             }
-
-            if (isCopy) throw new ArgumentException("Данный склад уже существует");
-    
-            WarehouseList[index].SetName(textBox.Text);
-            DataGridView.Rows[index].SetValues(WarehouseList[index].name);
-
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Невозможно изменить несуществующий склад");
+            }
 
         }
         public void DeleteRowProduct(DataGridView dataGridView)
         {
-            int index = dataGridView.CurrentCell.RowIndex;
-            int indexDeletedProductInList = SearchProductInTotalList(dataGridView.Rows[index].Cells[1].Value.ToString());
-            
-            if (dataGridView.Rows[index].Cells[1].Value.ToString() == "" && dataGridView.Rows.Count == 1)
-                throw new ArgumentException("Все продукты уже удалены");
-
-            TotalProductList.RemoveAt(indexDeletedProductInList);
-            foreach (var warehouse in WarehouseList)
+            try
             {
-                warehouse.products.RemoveAt(indexDeletedProductInList);
-            }
-
-            if (dataGridView.Rows.Count == 1)
-            {
-                dataGridView.Rows[index].SetValues(0, "", "");
-            } 
-            else
+                int index = dataGridView.CurrentCell.RowIndex;
+                int indexDeletedProductInList = SearchProductInTotalList(dataGridView.Rows[index].Cells[1].Value.ToString());
+                TotalProductList.RemoveAt(indexDeletedProductInList);
+                /*foreach (var warehouse in WarehouseList)
+                {
+                    warehouse.products.RemoveAt(indexDeletedProductInList);
+                }*/
                 dataGridView.Rows.RemoveAt(index);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Все продукты уже удалены");
+            }
         }
 
         public void DeleteRowWarehouse(DataGridView dataGridView)
         {
-            int index = dataGridView.CurrentCell.RowIndex;
-            int indexDeletedWarehouseInList = SearchIndexWarehouse(dataGridView.Rows[index].Cells[0].Value.ToString());
-
-            if (dataGridView.Rows[index].Cells[0].Value.ToString() == "" && dataGridView.Rows.Count == 1)
-                throw new ArgumentException("Все склады уже удалены");
-
-            WarehouseList.RemoveAt(indexDeletedWarehouseInList);
-
-            if (dataGridView.Rows.Count == 1)
+            try
             {
-                dataGridView.Rows[index].SetValues("");
-            }
-            else
+                int index = dataGridView.CurrentCell.RowIndex;
+                int indexDeletedWarehouseInList = SearchIndexWarehouse(dataGridView.Rows[index].Cells[0].Value.ToString());
+                WarehouseList.RemoveAt(indexDeletedWarehouseInList);
                 dataGridView.Rows.RemoveAt(index);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Все склады уже удалены");
+            }
         }
 
-        public void CreateRowProduct(DataGridView ProductDataGridView, NumericUpDown IdNumericUpDown, TextBox NameTextBox, TextBox UnitTextBox)
+        public void CreateRowProduct(DataGridView ProductDataGridView, NumericUpDown IdNumericUpDown, 
+            TextBox NameTextBox, TextBox UnitTextBox, DataGridView WarehouseDataGridView)
         {
+            //if (WarehouseDataGridView.RowCount == 0)
+                //throw new ArgumentException("Сначала создайте склад");
             uint Id = (uint)IdNumericUpDown.Value;
             string Name = NameTextBox.Text;
             string Unit = UnitTextBox.Text;
@@ -119,51 +122,58 @@ namespace Invetory_control
             else
                 TotalProductList.Add(new Product(Id, Name, Unit));
 
-            foreach (var warehouse in WarehouseList)
+            /*foreach (var warehouse in WarehouseList)
             {
                 warehouse.products.Add(TotalProductList.Last());
-            }
+            }*/
             ProductDataGridView.Rows.Add(TotalProductList.Last().id, TotalProductList.Last().name, TotalProductList.Last().unit);
             
         }
 
         public void ChangeRowProduct (DataGridView ProductDataGridView, DataGridView OperationDataGridView, NumericUpDown IdNumericUpDown, TextBox NameTextBox, TextBox UnitTextBox)
         {
-            int IndexCurrentRow = ProductDataGridView.CurrentCell.RowIndex;
-            bool isCopy = false;
-            string NameInRow = "";
-            uint IdInRow = 0;
-
-            if (!uint.TryParse(IdNumericUpDown.Text, out uint Id))
-                throw new ArgumentException("неверный формат id продукта");
-            
-            for (int i = 0; i < TotalProductList.Count; i++)
+            try
             {
-                NameInRow = ProductDataGridView.Rows[i].Cells[1].Value.ToString();
-                IdInRow = uint.Parse(ProductDataGridView.Rows[i].Cells[0].Value.ToString());
-                if (i == IndexCurrentRow) continue;
-                if (NameInRow == NameTextBox.Text || IdInRow == Id) isCopy = true;
+                int IndexCurrentRow = ProductDataGridView.CurrentCell.RowIndex;
+                bool isCopy = false;
+                string NameInRow = "";
+                uint IdInRow = 0;
+
+                if (!uint.TryParse(IdNumericUpDown.Text, out uint Id))
+                    throw new ArgumentException("неверный формат id продукта");
+
+                for (int i = 0; i < TotalProductList.Count; i++)
+                {
+                    NameInRow = ProductDataGridView.Rows[i].Cells[1].Value.ToString();
+                    IdInRow = uint.Parse(ProductDataGridView.Rows[i].Cells[0].Value.ToString());
+                    if (i == IndexCurrentRow) continue;
+                    if (NameInRow == NameTextBox.Text || IdInRow == Id) isCopy = true;
+                }
+
+                if (isCopy) throw new ArgumentException("Данный продукт или id продукта уже существует");
+
+                string OldName = ProductDataGridView.Rows[IndexCurrentRow].Cells[1].Value.ToString();
+                int indexChangedProductInList = SearchProductInTotalList(OldName);
+                Product ChangedProduct = TotalProductList[indexChangedProductInList];
+                ChangedProduct.SetValues(NameTextBox.Text, UnitTextBox.Text, Id);
+                ProductDataGridView.Rows[IndexCurrentRow].SetValues(ChangedProduct.id, ChangedProduct.name, ChangedProduct.unit);
+
+                foreach (var warehouse in WarehouseList)
+                {
+                    warehouse.ChangeProductInOperations(OldName, ChangedProduct.name, ChangedProduct.unit, ChangedProduct.id);
+                    warehouse.products[indexChangedProductInList].SetValues(ChangedProduct.name, ChangedProduct.unit, ChangedProduct.id);
+                }
+
+                for (int i = 0; i < OperationDataGridView.Rows.Count; i++)
+                {
+                    if (OperationDataGridView.Rows[i].Cells[5].Value.ToString() == OldName)
+                        OperationDataGridView.Rows[i].Cells[5].Value = ChangedProduct.name;
+                }
             }
-
-            if (isCopy) throw new ArgumentException("Данный продукт или id продукта уже существует");
-            
-            string OldName = ProductDataGridView.Rows[IndexCurrentRow].Cells[1].Value.ToString();
-            int indexChangedProductInList = SearchProductInTotalList(OldName);
-            Product ChangedProduct = TotalProductList[indexChangedProductInList];
-            ChangedProduct.SetValues(NameTextBox.Text, UnitTextBox.Text, Id);
-            ProductDataGridView.Rows[IndexCurrentRow].SetValues(ChangedProduct.id, ChangedProduct.name, ChangedProduct.unit);
-                    
-            foreach (var warehouse in WarehouseList)
+            catch (NullReferenceException)
             {
-                warehouse.ChangeProductInOperations(OldName, ChangedProduct.name, ChangedProduct.unit, ChangedProduct.id);                        
-                warehouse.products[indexChangedProductInList].SetValues(ChangedProduct.name, ChangedProduct.unit, ChangedProduct.id);
+                throw new NullReferenceException("Невозможно изменить несуществующий продукт");
             }
-
-            for (int i = 0; i < OperationDataGridView.Rows.Count; i++)
-            {
-                if (OperationDataGridView.Rows[i].Cells[5].Value.ToString() == OldName)
-                    OperationDataGridView.Rows[i].Cells[5].Value = ChangedProduct.name;
-            }                         
         }
         private int SearchProductInTotalList(string OldName)
         {
@@ -172,7 +182,7 @@ namespace Invetory_control
                 if (TotalProductList[i].name == OldName)
                     return i;
             }
-            return -1;
+            throw new ArgumentException("Не удалось найти продукт");
         }
 
         //Создает наименьший доступный id продукта
@@ -254,13 +264,11 @@ namespace Invetory_control
             NumericUpDown CountNumericUpDown, NumericUpDown UnitPriceNumericUpDown,
             TextBox CommentTextBox)
         {
-            //скорее всего не нужен
-            if (TypeComboBox.SelectedIndex < 0)
-                throw new ArgumentException("Не выбран тип операции");
-            //проверка на наличие необходимых данных
-            /*if (WarehouseComboBox.SelectedIndex > -1 &&
-            CountNumericUpDown.Value != 0 && NameProductListBox.SelectedIndex > -1)*/
+            
+            try
             {
+                if (TypeComboBox.SelectedIndex < 0)
+                    throw new ArgumentException("Не выбран тип операции");
                 string Date = DateTimePicker.Text;
                 string Type = TypeComboBox.Text;
                 string Warehouse = WarehouseComboBox.Text;
@@ -271,13 +279,14 @@ namespace Invetory_control
                 int Count = int.Parse(CountNumericUpDown.Value.ToString());
                 int indexWarehouse = SearchIndexWarehouse(Warehouse);
                 int indexProduct = WarehouseList[indexWarehouse].SearchIndexProduct(NameProduct);
+                int Id = int.Parse(OperationDataGridView.CurrentRow.Cells[0].Value.ToString());
 
                 if (Type == "Закупка" && Count < 0)
                     throw new ArgumentException("В данной операции может быть только положительное количество продуктов");
 
                 //добавляем id в пустую строку
-                if (!int.TryParse(OperationDataGridView.CurrentRow.Cells[0].Value.ToString(), out int Id))
-                    Id = CreateIdOperation();
+                //if (!int.TryParse(OperationDataGridView.CurrentRow.Cells[0].Value.ToString(), out int Id))
+                    //Id = CreateIdOperation();
 
                 int CountProductInOldOperation = WarehouseList[indexWarehouse].SearchCountProductInOperation(Id);
                 //проверка на то, что операция не отнимет товаров больше чем в самом складе 
@@ -312,6 +321,10 @@ namespace Invetory_control
                 }
                 else throw new ArgumentException("Изменение данной операции приведёт к отрицательному количеству продуктов");
             }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Невозможно изменить несуществующую операцию");
+            }
         }
 
         private int CreateIdOperation()
@@ -345,24 +358,24 @@ namespace Invetory_control
 
         internal void TryDeleteOperation(DataGridView operationDataGridView)
         {
-            int Rowindex = operationDataGridView.CurrentCell.RowIndex;
-
-            if (!int.TryParse(operationDataGridView.Rows[Rowindex].Cells[0].Value.ToString(), out int Id))
-                throw new ArgumentException("Все операции уже удалены");
-
-            string NameProduct = operationDataGridView.Rows[Rowindex].Cells[5].Value.ToString();
-
-            foreach (var warehouse in WarehouseList)
+            try
             {
-                warehouse.DeleteOperationInList(Id, NameProduct);
-            }
+                int Rowindex = operationDataGridView.CurrentCell.RowIndex;
+                int Id = int.Parse(operationDataGridView.Rows[Rowindex].Cells[0].Value.ToString());
 
-            if (operationDataGridView.Rows.Count == 1)
-            {
-                operationDataGridView.Rows[Rowindex].SetValues("", "", "", "", "", "", "", "", "", "");
-            }
-            else
+                string NameProduct = operationDataGridView.Rows[Rowindex].Cells[5].Value.ToString();
+
+                foreach (var warehouse in WarehouseList)
+                {
+                    warehouse.DeleteOperationInList(Id, NameProduct);
+                }
+
                 operationDataGridView.Rows.RemoveAt(Rowindex);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Все операции уже удалены");
+            }
             
         }
     }
