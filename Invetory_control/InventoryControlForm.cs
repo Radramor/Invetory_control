@@ -42,8 +42,7 @@ namespace Invetory_control
 
                 foreach (var opMoving in warehouse.opMovings)
                 {
-                    //не выписывает добавление продуктов в новый склад (вторая операция перемещения)
-                    if (opMoving.count > 0) continue;
+                    if (opMoving.count > 0) continue; //не выписывает добавление продуктов в новый склад (вторая операция перемещения)
                     OperationDataGridView.Rows.Add(opMoving.id, opMoving.date, "Перемещение", warehouse.name, opMoving.newWarehouse, opMoving.product.name, opMoving.product.unit, opMoving.count, "", "", opMoving.commentary);
                     OperationDataGridView.Rows[LastRow].Cells[8].Style.BackColor = Color.Black;
                     OperationDataGridView.Rows[LastRow].Cells[9].Style.BackColor = Color.Black;

@@ -84,7 +84,6 @@ namespace Invetory_control
                         OperationDataGridView.Rows[indexRow].Cells[8].Style.BackColor = Color.Black;
                         OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     }
-                    //else OperationDataGridView.Rows.RemoveAt(indexRow);
                     break;
 
                 case "Списание":
@@ -118,7 +117,7 @@ namespace Invetory_control
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     break;
             }
-            UpdateProductCount();            
+            UpdateProductsCount();            
         }
 
         public void ChangeOperations(DataGridView OperationDataGridView,
@@ -180,10 +179,10 @@ namespace Invetory_control
                     OperationDataGridView.Rows[indexRow].Cells[9].Style.BackColor = Color.Black;
                     break;
             }
-            UpdateProductCount();
+            UpdateProductsCount();
         }
 
-        private void UpdateProductCount()
+        private void UpdateProductsCount()
         {
             foreach (Product product in products)
             {
@@ -273,7 +272,7 @@ namespace Invetory_control
             }
         }
 
-        //проверяет совпадение id c имеющимися операциями 
+        //проверяет на совпадение id c имеющимися операциями 
         public bool CheckId(int Id)
         {
             foreach (var opBuy in opBuys)

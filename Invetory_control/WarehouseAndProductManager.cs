@@ -21,7 +21,7 @@ namespace Invetory_control
         }
         public void load()
         {
-            TotalProductList = JsonConvert.DeserializeObject<List<Product>>(File.ReadAllText("saveProduct.json"));
+            TotalProductList = File.Exists("saveProduct.json") ? JsonConvert.DeserializeObject<List<Product>>(File.ReadAllText("saveProduct.json")) : new List<Product>();
             WarehouseList = File.Exists("saveWarehouse.json") ? JsonConvert.DeserializeObject<List<Warehouse>>(File.ReadAllText("saveWarehouse.json")) : new List<Warehouse>();
         }
         public void CreateRowWarehouse(DataGridView WarehouseDataGridView, TextBox textBox)
@@ -64,25 +64,6 @@ namespace Invetory_control
             }
 
         }
-        public void DeleteRowProduct(DataGridView dataGridView)
-        {
-            try
-            {
-                int index = dataGridView.CurrentCell.RowIndex;
-                int indexDeletedProductInList = SearchProductInTotalList(dataGridView.Rows[index].Cells[1].Value.ToString());
-                TotalProductList.RemoveAt(indexDeletedProductInList);
-                /*foreach (var warehouse in WarehouseList)
-                {
-                    warehouse.products.RemoveAt(indexDeletedProductInList);
-                }*/
-                dataGridView.Rows.RemoveAt(index);
-            }
-            catch (NullReferenceException)
-            {
-                throw new NullReferenceException("Все продукты уже удалены");
-            }
-        }
-
         public void DeleteRowWarehouse(DataGridView dataGridView)
         {
             try
@@ -97,12 +78,11 @@ namespace Invetory_control
                 throw new NullReferenceException("Все склады уже удалены");
             }
         }
-
-        public void CreateRowProduct(DataGridView ProductDataGridView, NumericUpDown IdNumericUpDown, 
+        public void CreateRowProduct(DataGridView ProductDataGridView, NumericUpDown IdNumericUpDown,
             TextBox NameTextBox, TextBox UnitTextBox, DataGridView WarehouseDataGridView)
         {
             //if (WarehouseDataGridView.RowCount == 0)
-                //throw new ArgumentException("Сначала создайте склад");
+            //throw new ArgumentException("Сначала создайте склад");
             uint Id = (uint)IdNumericUpDown.Value;
             string Name = NameTextBox.Text;
             string Unit = UnitTextBox.Text;
@@ -127,10 +107,9 @@ namespace Invetory_control
                 warehouse.products.Add(TotalProductList.Last());
             }*/
             ProductDataGridView.Rows.Add(TotalProductList.Last().id, TotalProductList.Last().name, TotalProductList.Last().unit);
-            
-        }
 
-        public void ChangeRowProduct (DataGridView ProductDataGridView, DataGridView OperationDataGridView, NumericUpDown IdNumericUpDown, TextBox NameTextBox, TextBox UnitTextBox)
+        }
+        public void ChangeRowProduct(DataGridView ProductDataGridView, DataGridView OperationDataGridView, NumericUpDown IdNumericUpDown, TextBox NameTextBox, TextBox UnitTextBox)
         {
             try
             {
@@ -175,11 +154,31 @@ namespace Invetory_control
                 throw new NullReferenceException("Невозможно изменить несуществующий продукт");
             }
         }
-        private int SearchProductInTotalList(string OldName)
+
+        public void DeleteRowProduct(DataGridView dataGridView)
+        {
+            try
+            {
+                int index = dataGridView.CurrentCell.RowIndex;
+                int indexDeletedProductInList = SearchProductInTotalList(dataGridView.Rows[index].Cells[1].Value.ToString());
+                TotalProductList.RemoveAt(indexDeletedProductInList);
+                /*foreach (var warehouse in WarehouseList)
+                {
+                    warehouse.products.RemoveAt(indexDeletedProductInList);
+                }*/
+                dataGridView.Rows.RemoveAt(index);
+            }
+            catch (NullReferenceException)
+            {
+                throw new NullReferenceException("Все продукты уже удалены");
+            }
+        }
+        
+        private int SearchProductInTotalList(string Name)
         {
             for (int i = 0; i < TotalProductList.Count; i++)
             {
-                if (TotalProductList[i].name == OldName)
+                if (TotalProductList[i].name == Name)
                     return i;
             }
             throw new ArgumentException("Не удалось найти продукт");
